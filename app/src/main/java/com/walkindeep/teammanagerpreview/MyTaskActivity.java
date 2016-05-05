@@ -15,6 +15,7 @@ import com.dexafree.materialList.card.Card;
 import com.dexafree.materialList.card.CardProvider;
 import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.TextViewAction;
+import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
 
 import org.json.JSONArray;
@@ -65,6 +66,7 @@ public class MyTaskActivity extends NavigationActivity {
         final User user = User.getUser("guojiahao", "teammanager");
         updateTask(user);
 
+        /*下滑刷新*/
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.SwipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -173,7 +175,17 @@ public class MyTaskActivity extends NavigationActivity {
         for (int i = 0; i < cards.length; i++) {
             mListView.getAdapter().add(cards[i]);
 
+            /*设置卡片可以滑动删除*/
+            cards[i].setDismissible(true);
         }
+
+        /*设置滑动删除操作*/
+        mListView.setOnDismissCallback(new OnDismissCallback() {
+            @Override
+            public void onDismiss(Card card, int position) {
+
+            }
+        });
     }
 
     class DataHandler extends AbstractDataQuery {
