@@ -27,6 +27,10 @@ public abstract class AbstractDataQuery {
         return stuff;
     }
 
+    /*从后端获取数据*/
+/*    parameter 是参数，例如：issues.xml?nometa=1
+    context 一般用this
+    user 是用户 */
     public void getData(String parameter, Context context, final User user) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
