@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_task"
+            android:icon="@drawable/task_icon"
+            android:title="任务" />
+        <item
+            android:id="@+id/nav_team"
+            android:icon="@drawable/contact_icon"
+            android:title="团队" />
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/icon_chat"
+            android:title="交流" />
+        <item
+            android:id="@+id/nav_file"
+            android:icon="@drawable/file_icon"
+            android:title="文件" />
+        <item
+            android:id="@+id/nav_alarm"
+            android:icon="@drawable/alarm"
+            android:title="提醒" />
+    </group>
+
+    <item android:title="个人">
+        <menu>
+            <item
+                android:id="@+id/nav_calendar"
+                android:icon="@drawable/icon_calendar"
+                android:title="日历" />
+            <item
+                android:id="@+id/nav_performance"
+                android:icon="@drawable/icon_performance"
+                android:title="绩效" />
+        </menu>
+    </item>
+
+</menu>
