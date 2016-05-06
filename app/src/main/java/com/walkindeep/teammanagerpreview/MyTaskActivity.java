@@ -131,14 +131,22 @@ public class MyTaskActivity extends NavigationActivity {
         }
         List<Card> cards = new ArrayList<>();
 
+        /*用于存储所有issue的list*/
+        List<Issue> issueList = Issue.getIssueList();
+        issueList.clear();
+
         for (int i = 0; i < userIssuesJSONArray.length(); i++) {
             try {
+                /*创建issue类*/
+                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"), userIssuesJSONArray.getJSONObject(i).getString("description"));
+                issueList.add(issue);
+
                 Card card = new Card.Builder(this)
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
 
-                        .setTitle(userIssuesJSONArray.getJSONObject(i).getString("subject"))
-                        .setDescription(userIssuesJSONArray.getJSONObject(i).getString("description"))
+                        .setTitle(issue.getSubject())
+                        .setDescription(issue.getDescription())
                         .addAction(R.id.left_text_button, new TextViewAction(this)
                                 .setText("按钮1")
                                 .setTextResourceColor(R.color.black_button)
