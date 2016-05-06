@@ -1,5 +1,10 @@
 package com.walkindeep.teammanagerpreview;
 
+import android.content.Context;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +13,10 @@ import java.util.List;
  */
 public class Issue {
     private static List<Issue> issueList = new ArrayList<>();
+    private int issue_id;
     private String projectId;
     private String trackerId;
-    private String status_name;
+    private int status_id;
     private String assigned_to_id;
     private String priority_id;
     private String description;
@@ -19,9 +25,11 @@ public class Issue {
     private String watcher_user_ids;
     private int position;//在cardlist中的位置
 
-    public Issue(String subject, String description) {
+    public Issue(String subject, String description, int position, int issue_id) {
         this.subject = subject;
         this.description = description;
+        this.position = position;
+        this.issue_id = issue_id;
     }
 
     public static List<Issue> getIssueList() {
@@ -36,6 +44,14 @@ public class Issue {
             }
         }
         return null;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public String getProjectId() {
@@ -54,12 +70,12 @@ public class Issue {
         this.trackerId = trackerId;
     }
 
-    public String getStatus_name() {
-        return status_name;
+    public int getStatus_id() {
+        return status_id;
     }
 
-    public void setStatus_name(String status_name) {
-        this.status_name = status_name;
+    public void setStatusid(int status_id) {
+        this.status_id = status_id;
     }
 
     public String getWatcher_user_ids() {
@@ -111,7 +127,29 @@ public class Issue {
     }
 
     /*推送到服务端*/
-    public void push() {
+    public void pushStatusName(Context context) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject("{" +
+                    "  \"issue\": {" +
+                    "    \"status_id\": \"" + status_id + "\" " +
+                    "  }" +
+                    "}");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        DataPost dataPost = new DataPost();
+
+        String parameter = "issues/" + issue_id + ".json";
+        dataPost.post(parameter, context, User.getUser(), jsonObject);
+    }
+
+    public int getIssue_id() {
+        return issue_id;
+    }
+
+    public void setIssue_id(int issue_id) {
+        this.issue_id = issue_id;
     }
 }

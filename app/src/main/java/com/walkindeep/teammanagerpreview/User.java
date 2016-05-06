@@ -14,7 +14,11 @@ public class User {
 
     }
 
-    public static User getUser(String username, String password) {
+    public static User getUser() {
+        return user;
+    }
+
+    public static User init(String username, String password) {
         if (user == null) {
             synchronized (User.class) {
                 if (user == null) {

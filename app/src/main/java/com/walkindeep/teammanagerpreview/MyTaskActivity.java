@@ -62,7 +62,7 @@ public class MyTaskActivity extends NavigationActivity {
 
 /*cardView*/
 //        initCard();
-        final User user = User.getUser("guojiahao", "teammanager");
+        final User user = User.init("guojiahao", "teammanager");
         updateTask(user);
 
         /*下滑刷新*/
@@ -78,14 +78,14 @@ public class MyTaskActivity extends NavigationActivity {
     /*更新任务数据*/
     private void updateTask(User user, SwipeRefreshLayout swipeRefreshLayout) {
         DataHandler dataHandler = new DataHandler();
-        dataHandler.getData("issues.json?assigned_to_id=me", this, user);
+        dataHandler.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     /*更新任务数据*/
     private void updateTask(User user) {
         DataHandler dataHandler = new DataHandler();
-        dataHandler.getData("issues.json?assigned_to_id=me", this, user);
+        dataHandler.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
     }
 //    private void initCard() {
 //        // Instantiate the RequestQueue.
@@ -137,7 +137,7 @@ public class MyTaskActivity extends NavigationActivity {
         for (int i = 0; i < userIssuesJSONArray.length(); i++) {
             try {
                 /*创建issue类*/
-                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"), userIssuesJSONArray.getJSONObject(i).getString("description"));
+                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"), userIssuesJSONArray.getJSONObject(i).getString("description"), i, userIssuesJSONArray.getJSONObject(i).getInt("id"));
                 issueList.add(issue);
 
                 Card card = new Card.Builder(this)
@@ -177,7 +177,7 @@ public class MyTaskActivity extends NavigationActivity {
 
 
     public void setCardsToUI(Card[] cards) {
-        MaterialListView mListView = (MaterialListView) findViewById(R.id.material_listview);
+        final MaterialListView mListView = (MaterialListView) findViewById(R.id.material_listview);
         mListView.getAdapter().clearAll();
         for (int i = 0; i < cards.length; i++) {
             mListView.getAdapter().add(cards[i]);
@@ -191,8 +191,14 @@ public class MyTaskActivity extends NavigationActivity {
             @Override
             public void onDismiss(Card card, int position) {
                 Issue issue = Issue.getIssue(position);
-                issue.setStatus_name("已解决");
-                issue.push();
+                issue.setStatusid(3);
+                issue.pushStatusName(mContext);
+
+                List<Issue> issueList = Issue.getIssueList();
+                                    /*被删除的卡片下面的卡片对应的issue 的position减一*/
+                for (int i = position; i < issueList.size(); i++) {
+                    issueList.get(i).setPosition(issueList.get(i).getPosition() - 1);
+                }
             }
         });
     }
