@@ -10,13 +10,14 @@ public class Issue {
     private static List<Issue> issueList = new ArrayList<>();
     private String projectId;
     private String trackerId;
-    private String status_id;
+    private String status_name;
     private String assigned_to_id;
     private String priority_id;
     private String description;
     private String subject;
     private String parent_issue_id;
     private String watcher_user_ids;
+    private int position;//在cardlist中的位置
 
     public Issue(String subject, String description) {
         this.subject = subject;
@@ -25,6 +26,16 @@ public class Issue {
 
     public static List<Issue> getIssueList() {
         return issueList;
+    }
+
+    public static Issue getIssue(int position) {
+        for (int i = 0; i < issueList.size(); i++) {
+            Issue issue = issueList.get(i);
+            if (issue.position == position) {
+                return issue;
+            }
+        }
+        return null;
     }
 
     public String getProjectId() {
@@ -43,12 +54,12 @@ public class Issue {
         this.trackerId = trackerId;
     }
 
-    public String getStatus_id() {
-        return status_id;
+    public String getStatus_name() {
+        return status_name;
     }
 
-    public void setStatus_id(String status_id) {
-        this.status_id = status_id;
+    public void setStatus_name(String status_name) {
+        this.status_name = status_name;
     }
 
     public String getWatcher_user_ids() {
@@ -97,5 +108,10 @@ public class Issue {
 
     public void setAssigned_to_id(String assigned_to_id) {
         this.assigned_to_id = assigned_to_id;
+    }
+
+    /*推送到服务端*/
+    public void push() {
+
     }
 }

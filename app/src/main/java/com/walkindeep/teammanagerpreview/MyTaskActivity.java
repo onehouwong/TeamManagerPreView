@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dexafree.materialList.card.Card;
@@ -191,7 +190,9 @@ public class MyTaskActivity extends NavigationActivity {
         mListView.setOnDismissCallback(new OnDismissCallback() {
             @Override
             public void onDismiss(Card card, int position) {
-
+                Issue issue = Issue.getIssue(position);
+                issue.setStatus_name("已解决");
+                issue.push();
             }
         });
     }
