@@ -94,7 +94,7 @@ public class MyTaskActivity extends NavigationActivity {
         for (int i = 0; i < userIssuesJSONArray.length(); i++) {
             try {
                 /*创建issue类*/
-                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"), userIssuesJSONArray.getJSONObject(i).getString("description"), i, userIssuesJSONArray.getJSONObject(i).getInt("id"));
+                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"), userIssuesJSONArray.getJSONObject(i).getString("description"), userIssuesJSONArray.getJSONObject(i).getInt("id"));
                 issueList.add(issue);
 
                 Card card = new Card.Builder(this)
@@ -123,6 +123,7 @@ public class MyTaskActivity extends NavigationActivity {
                                 }))
                         .endConfig()
                         .build();
+                card.setTag(issue);//设置卡片和issue关联
                 cards.add(card);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -145,23 +146,20 @@ public class MyTaskActivity extends NavigationActivity {
 
         /*设置滑动删除操作*/
         mListView.setOnDismissCallback(new OnDismissCallback() {
-            public void onDismiss(Card card, final int position) {
+            public void onDismiss(final Card card, final int position) {
                 Snackbar.make(mListView, "已标记完成", Snackbar.LENGTH_LONG)
                         .setCallback(new Snackbar.Callback() {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
                                 if (event == DISMISS_EVENT_ACTION) {
                                 } else {
-                                    Issue issue = Issue.getIssue(position);
+                                    Issue issue = (Issue) card.getTag();
                                     issue.setStatusid(3);
                                     issue.pushStatusName(mContext);
 
                                     List<Issue> issueList = Issue.getIssueList();
 
-                                    /*被删除的卡片下面的卡片对应的issue 的position减一*/
-                                    for (int i = position; i < issueList.size(); i++) {
-                                        issueList.get(i).setPosition(issueList.get(i).getPosition() - 1);
-                                    }
+
                                 }
                             }
                         })

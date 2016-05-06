@@ -23,12 +23,10 @@ public class Issue {
     private String subject;
     private String parent_issue_id;
     private String watcher_user_ids;
-    private int position;//在cardlist中的位置
 
-    public Issue(String subject, String description, int position, int issue_id) {
+    public Issue(String subject, String description, int issue_id) {
         this.subject = subject;
         this.description = description;
-        this.position = position;
         this.issue_id = issue_id;
     }
 
@@ -36,23 +34,6 @@ public class Issue {
         return issueList;
     }
 
-    public static Issue getIssue(int position) {
-        for (int i = 0; i < issueList.size(); i++) {
-            Issue issue = issueList.get(i);
-            if (issue.position == position) {
-                return issue;
-            }
-        }
-        return null;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
 
     public String getProjectId() {
         return projectId;
