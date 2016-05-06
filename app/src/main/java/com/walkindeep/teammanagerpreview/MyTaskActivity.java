@@ -151,7 +151,8 @@ public class MyTaskActivity extends NavigationActivity {
                         .setCallback(new Snackbar.Callback() {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
-                                if (event == DISMISS_EVENT_ACTION) {
+                                if (event == DISMISS_EVENT_ACTION) {//do nothing but recover card
+                                    mListView.getAdapter().add(position, card);
                                 } else {
                                     Issue issue = (Issue) card.getTag();
                                     issue.setStatusid(3);
