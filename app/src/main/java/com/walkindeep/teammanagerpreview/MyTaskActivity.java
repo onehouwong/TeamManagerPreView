@@ -32,7 +32,6 @@ public class MyTaskActivity extends NavigationActivity {
         super.onCreate(savedInstanceState);
 
         /*全局导航栏*/
-//        setContentView(R.layout.activity_task);//不再需要
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_task, null, false);
@@ -41,24 +40,14 @@ public class MyTaskActivity extends NavigationActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButtionTask);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-//        //generate task
-//        ViewGroup task_layout = (ViewGroup) findViewById(R.id.task_layout);
-//        CardView cardView = (CardView) findViewById(R.id.task_card_view);
-//        EditText task_headline = (EditText) findViewById(R.id.task_headline);
-//        task_headline.setText("");
-//        EditText task_content = (EditText) findViewById(R.id.task_content);
-//        task_content.setText("");
-//        task_layout.addView(cardView);
 
 /*cardView*/
 //        initCard();
@@ -87,38 +76,6 @@ public class MyTaskActivity extends NavigationActivity {
         DataHandler dataHandler = new DataHandler();
         dataHandler.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
     }
-//    private void initCard() {
-//        // Instantiate the RequestQueue.
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url = "http://teammanager.tk/issues.json";
-//        // Request a string response from the provided URL.
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Card[] cards = jsonToCards(response);
-//                        setCardsToUI(cards);
-//                    }
-//
-//
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//            }
-//        }) {
-//
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> params = new HashMap<String, String>();
-//                String creds = String.format("%s:%s", "guojiahao", "teammanager");
-//                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
-//                params.put("Authorization", auth);
-//                return params;
-//            }
-//        };
-//// Add the request to the RequestQueue.
-//        queue.add(stringRequest);
-//    }
 
     private Card[] jsonToCards(JSONObject userIssuesJSONObjectTemp) {
         JSONArray userIssuesJSONArray = null;
@@ -188,17 +145,34 @@ public class MyTaskActivity extends NavigationActivity {
 
         /*设置滑动删除操作*/
         mListView.setOnDismissCallback(new OnDismissCallback() {
-            @Override
-            public void onDismiss(Card card, int position) {
-                Issue issue = Issue.getIssue(position);
-                issue.setStatusid(3);
-                issue.pushStatusName(mContext);
+            public void onDismiss(Card card, final int position) {
+                Snackbar.make(mListView, "已标记完成", Snackbar.LENGTH_LONG)
+                        .setCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onDismissed(Snackbar snackbar, int event) {
+                                if (event == DISMISS_EVENT_ACTION) {
+                                } else {
+                                    Issue issue = Issue.getIssue(position);
+                                    issue.setStatusid(3);
+                                    issue.pushStatusName(mContext);
 
-                List<Issue> issueList = Issue.getIssueList();
+                                    List<Issue> issueList = Issue.getIssueList();
+
                                     /*被删除的卡片下面的卡片对应的issue 的position减一*/
-                for (int i = position; i < issueList.size(); i++) {
-                    issueList.get(i).setPosition(issueList.get(i).getPosition() - 1);
-                }
+                                    for (int i = position; i < issueList.size(); i++) {
+                                        issueList.get(i).setPosition(issueList.get(i).getPosition() - 1);
+                                    }
+                                }
+                            }
+                        })
+                        .setAction("撤销", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        })
+
+                        .show();
             }
         });
     }
