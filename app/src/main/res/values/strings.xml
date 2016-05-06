@@ -8,6 +8,9 @@
     <string name="title_activity_task">我的任务</string>
     <string name="title_activity_task_detail">TaskDetailActivity</string>
     <string name="title_activity_perferance">我的绩效</string>
+    <string name="buildProject">新建项目</string>
+    <string name="buildTask">新建任务</string>
+
     <string name="title_activity_my_task2">MyTask2Activity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
