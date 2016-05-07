@@ -1,6 +1,7 @@
 package com.walkindeep.teammanagerpreview;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cocosw.bottomsheet.BottomSheet;
 import com.dexafree.materialList.card.Card;
 import com.dexafree.materialList.card.CardProvider;
 import com.dexafree.materialList.card.OnActionClickListener;
@@ -45,6 +47,8 @@ public class MyTaskActivity extends NavigationActivity {
             @Override
             public void onClick(View view) {
 
+                showBottomSheet();
+
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -62,6 +66,22 @@ public class MyTaskActivity extends NavigationActivity {
                 updateTask(user, swipeRefreshLayout);
             }
         });
+    }
+
+    private void showBottomSheet() {
+        new BottomSheet.Builder(this).title("新建").sheet(R.menu.task_bottom_sheet).listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case R.id.buildProject:
+                        //// TODO: 2016-05-07 call buildProject UI here
+                        break;
+                    case R.id.buildTask:
+                        //// TODO: 2016-05-07 call buildTask UI here
+                        break;
+                }
+            }
+        }).show();
     }
 
     /*更新任务数据*/

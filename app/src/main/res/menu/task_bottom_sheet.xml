@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/buildProject"
+        android:icon="@drawable/bs_ic_more"
+        android:title="@string/buildProject" />
+    <item
+        android:id="@+id/buildTask"
+        android:icon="@drawable/bs_ic_more"
+        android:title="@string/buildTask" />
+</menu>
