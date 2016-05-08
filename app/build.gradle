@@ -11,7 +11,12 @@ android {
         versionCode 1
         versionName "1.0"
 
-
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "qQvvl8yG4t5Z6OW6HvGqg6",
+                GETUI_APP_KEY   : "Ke1lpWBQJE7ZZnUU1I96h8",
+                GETUI_APP_SECRET: "Ke1lpWBQJE7ZZnUU1I96h8",
+                PACKAGE_NAME    : applicationId
+        ]
     }
     buildTypes {
         release {
@@ -38,5 +43,9 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.cocosw:bottomsheet:1.+@aar'
 
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.getui:sdk:2.8.1.0'
+    compile 'com.getui:ext:2.0.3'
+    compile 'com.android.support:support-v4:+'
 
 }

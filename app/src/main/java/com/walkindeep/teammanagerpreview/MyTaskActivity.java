@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.igexin.sdk.PushManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class MyTaskActivity extends NavigationActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//push
+        PushManager.getInstance().initialize(this.getApplicationContext());
+
 
         /*全局导航栏*/
         LayoutInflater inflater = (LayoutInflater) this
