@@ -21,11 +21,22 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
- * Created by jiahao on 2016-05-02.
+ * 用于从客户端向后端传输数据的类。
+ *实现了Redmine API。
+ *
  */
 public class DataPost {
 
+    /**
+     * 根据Redmine API 向后端传输数据。
+     *
+     * @param parameter  Redmine API中跟在网址后面的部分，如 issues.json
+     * @param context    上下文
+     * @param user       传入User类的实例
+     * @param jsonObject 传入jsonObject实例，即在Redmine API中需要用到的JSon
+     */
     public void post(String parameter, Context context, final User user, JSONObject jsonObject) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
