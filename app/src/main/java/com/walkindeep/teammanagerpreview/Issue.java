@@ -247,5 +247,7 @@ public class Issue {
      */
     public void setIssue_id(int issue_id) {
         this.issue_id = issue_id;
+
     }
+
 }

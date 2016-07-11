@@ -3,6 +3,10 @@ package com.walkindeep.teammanagerpreview;
 /**
  * Created by jiahao on 2016-05-01.
  */
+
+/**
+ * 用户类
+ */
 public class User {
     private static volatile User user = null;
     private String username;
@@ -35,5 +39,9 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean authenticate() {
+        return false;
     }
 }

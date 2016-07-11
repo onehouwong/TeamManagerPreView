@@ -60,7 +60,7 @@ public class MyTaskActivity extends NavigationActivity {
 
 /*cardView*/
 //        initCard();
-        final User user = User.init("guojiahao", "teammanager");
+        final User user = User.init("test2", "teammanager");
         updateTask(user);
 
         /*下滑刷新*/

@@ -22,15 +22,24 @@ import java.util.Map;
 /**
  * Created by jiahao on 2016-05-02.
  */
+
+/**
+ * 功能：使用Redmine API向后端发送查询，并接受返回结果，work()指示了接受数据后的处理动作，需要自行实现动作
+ * 示范：
+ * SUbclsssOfAbstractDataQuery dataQuery = new SUbclsssOfAbstractDataQuery();
+ * dataQuery.getData("issues.xml?nometa=1",this, user);
+ */
 public abstract class AbstractDataQuery {
     private static Object retur(Object stuff) {
         return stuff;
     }
 
-    /*从后端获取数据*/
-/*    parameter 是参数，例如：issues.xml?nometa=1
-    context 一般用this
-    user 是用户 */
+    /**
+     * @param parameter api参数，例如：issues.xml?nometa=1
+     * @param context   一般用this
+     * @param user      用户
+     */
+
     public void getData(String parameter, Context context, final User user) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
