@@ -27,6 +27,9 @@ import com.igexin.sdk.PushManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 我的任务界面，同时也是主界面
+ */
 public class MyTaskActivity extends NavigationActivity {
     private Context mContext = this;
 

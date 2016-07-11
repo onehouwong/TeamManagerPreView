@@ -15,6 +15,9 @@ import com.gigamole.library.ArcProgressStackView;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * 没用的。
+ */
 public class PerferanceActivity extends NavigationActivity {
     public final static int MODEL_COUNT = 4;
     // APSV

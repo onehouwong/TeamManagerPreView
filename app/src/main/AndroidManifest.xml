@@ -21,11 +21,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MyTaskActivity"
-
             android:parentActivityName=".NavigationActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,9 +34,7 @@
             android:label="@string/title_activity_perferance"
             android:parentActivityName=".NavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SginInActivity">
-
-        </activity>
+        <activity android:name=".SginInActivity"></activity>
     </application>
 
 </manifest>

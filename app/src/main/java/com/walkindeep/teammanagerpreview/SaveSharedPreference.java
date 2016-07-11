@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+/**
+ * 郭嘉豪：用于登录、注册的类 半成品，温昊煌可参考亦可自主推倒重建
+ */
 public class SaveSharedPreference {
     static final String PREF_USER_NAME = "username";
 
