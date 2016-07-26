@@ -66,6 +66,7 @@ public abstract class AbstractDataQuery {
             }
         }) {
 
+            //            在头部添加用户的账号密码以便进行HTTP基本认证
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<String, String>();
