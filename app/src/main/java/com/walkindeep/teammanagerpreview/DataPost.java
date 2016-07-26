@@ -55,7 +55,7 @@ public class DataPost {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("ERROR", "onErrorResponse");
+                Log.e("ERROR", "onErrorResponse");//在android studio中打印错误信息,正式版应移除
                 errorResponseHandle(error);/*对http请求后返回的信息进行处理（http请求有错误的情况下）
                 在DataPost中默认为空，即不处理
                  如果需要处理，请继承DataPost并重写此方法*/
