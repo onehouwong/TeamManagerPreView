@@ -24,8 +24,7 @@ import java.util.Map;
 
 /**
  * 用于从客户端向后端传输数据的类。
- *实现了Redmine API。
- *
+ * 实现了Redmine API。
  */
 public class DataPost {
 
@@ -43,17 +42,23 @@ public class DataPost {
         String url = "http://teammanager.tk/" + parameter;
         // Request a string response from the provided URL.
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("!", "response -> " + response.toString());
+                        Log.d("!", "response -> " + response.toString());//在android studio中打印response，正式版应移除这行
+                        responseHandle();//对http请求后返回的信息进行处理,在DataPost类中此方法默认为空，如需要对http请求返回的数据进行处理，请继承DataPost并重写这个方法
                     }
 
 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e("ERROR", "onErrorResponse");
+                errorResponseHandle(error);/*对http请求后返回的信息进行处理（http请求有错误的情况下）
+                在DataPost中默认为空，即不处理
+                 如果需要处理，请继承DataPost并重写此方法*/
             }
         }) {
 
@@ -68,6 +73,25 @@ public class DataPost {
         };
 // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
+    }
+
+    /**
+     * 对http请求后返回的信息进行处理（http请求有错误的情况下）
+     * 在DataPost中默认为空，即不处理
+     * 如果需要处理，请继承DataPost并重写此方法
+     * <p/>
+     * 获取HTTP状态码的方法：error.networkResponse.statusCode
+     */
+    private void errorResponseHandle(VolleyError error) {
+
+    }
+
+    /**
+     * 对http请求后返回的信息进行处理（http请求无错误的情况下）
+     * 在DataPost中默认为空，即不处理
+     * 如果需要处理，请继承DataPost并重写此方法
+     */
+    private void responseHandle() {
     }
 
 

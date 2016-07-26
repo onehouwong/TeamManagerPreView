@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.igexin.sdk.PushManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +75,8 @@ public class MyTaskActivity extends NavigationActivity {
                 updateTask(user, swipeRefreshLayout);
             }
         });
+
+
     }
 
     private void showBottomSheet() {
