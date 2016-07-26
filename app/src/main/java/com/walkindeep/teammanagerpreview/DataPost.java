@@ -36,22 +36,19 @@ public class DataPost {
      * @param parameter  Redmine API中跟在网址后面的部分，如 issues.json
      * @param context    上下文
      * @param jsonObject 传入jsonObject实例，即在Redmine API中需要用到的JSON
-     *                   <p/>
      *                   使用示范：创建issue
      *                   <p/>
      *                   <blockquote><pre>
-     *                                                       Datapost datapost = new Datapost();
-     *                                                       JSONObject insideJsonObject = new JSONObject();
-     *                                                       JSONObject outsideJsonObject = new JSONObject();
-     *                                                       insideJsonObject.put("project_id",1);
-     *                                     insideJsonObject.put("subject","subjectName");
-     *                                                       insideJsonObject.put("tracker_id",1);
-     *                                                       insideJsonObject.put("status_id",1);
-     *                   <p/>
-     *                                                       outsideJsonObject.put("issue",insideJsonObject);
-     *                   <p/>
-     *                                                       datapost.post("issues.json",this,user,outsideJsonObject);
-     *                                                       </pre></blockquote>
+     *                   Datapost datapost = new Datapost();
+     *                   JSONObject insideJsonObject = new JSONObject();
+     *                   JSONObject outsideJsonObject = new JSONObject();
+     *                   insideJsonObject.put("project_id",1);
+     *                   insideJsonObject.put("subject","subjectName");
+     *                   insideJsonObject.put("tracker_id",1);
+     *                   insideJsonObject.put("status_id",1);
+     *                   outsideJsonObject.put("issue",insideJsonObject);
+     *                   datapost.post("issues.json",this,user,outsideJsonObject);
+     *                   </pre></blockquote>
      *                   注意：处理JSONObject时需要try...catch
      */
     public void post(String parameter, Context context, JSONObject jsonObject) {
@@ -94,19 +91,21 @@ public class DataPost {
      *                   <p/>
      *                   使用示范：创建issue
      *                   <p/>
-     *                   <blockquote><pre>
-     *                                     Datapost datapost = new Datapost();
-     *                                     JSONObject insideJsonObject = new JSONObject();
-     *                                     JSONObject outsideJsonObject = new JSONObject();
-     *                                     insideJsonObject.put("project_id",1);
-     *                   insideJsonObject.put("subject","subjectName");
-     *                                     insideJsonObject.put("tracker_id",1);
-     *                                     insideJsonObject.put("status_id",1);
      *                   <p/>
-     *                                     outsideJsonObject.put("issue",insideJsonObject);
-     *                   <p/>
-     *                                     datapost.post("issues.json",this,user,outsideJsonObject);
-     *                                     </pre></blockquote>
+     *                   <pre>
+     *                                                       Datapost datapost = new Datapost();
+     *                                                       JSONObject insideJsonObject = new JSONObject();
+     *                                                       JSONObject outsideJsonObject = new JSONObject();
+     *                                                       insideJsonObject.put("project_id",1);
+     *                                                       insideJsonObject.put("subject","subjectName");
+     *                                                       insideJsonObject.put("tracker_id",1);
+     *                                                       insideJsonObject.put("status_id",1);
+     *
+     *                                                       outsideJsonObject.put("issue",insideJsonObject);
+     *
+     *                                                       datapost.post("issues.json",this,user,outsideJsonObject);
+     *
+     *                                                       </pre>
      *                   注意：处理JSONObject时需要try...catch
      */
     public void post(String parameter, Context context, final User user, JSONObject jsonObject) {
@@ -156,7 +155,7 @@ public class DataPost {
      * <p/>
      * 获取HTTP状态码的方法：error.networkResponse.statusCode
      */
-    private void errorResponseHandle(VolleyError error) {
+    protected void errorResponseHandle(VolleyError error) {
 
     }
 
@@ -165,7 +164,7 @@ public class DataPost {
      * 在DataPost中默认为空，即不处理
      * 如果需要处理，请继承DataPost并重写此方法
      */
-    private void responseHandle(JSONObject response) {
+    protected void responseHandle(JSONObject response) {
     }
 
 
