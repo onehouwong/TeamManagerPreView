@@ -18,6 +18,10 @@ public class User {
      * 用户密码
      */
     private String password;
+    /**
+     * 用于与服务器后台交互的key
+     */
+    private String key;
 
     private User(String username, String password) {
         this.username = username;
@@ -55,8 +59,8 @@ public class User {
      *
      * @return 账号
      */
-    public String getUsername() {
-        return username;
+    public static String getUsername() {
+        return user.username;
     }
 
     /**
@@ -64,16 +68,24 @@ public class User {
      *
      * @return 密码
      */
-    public String getPassword() {
-        return password;
+    public static String getPassword() {
+        return user.password;
     }
 
     /**
-     * 用来登录，未完成，可删，可加工
-     * by 郭嘉豪创建于5月 注释于2016年7月11日
-     * @return
+     * 获取key
+     * @return key
      */
-    public boolean authenticate() {
-        return false;
+    public static String getKey() {
+        return user.key;
+    }
+
+    /**
+     * 设置key
+     *
+     * @param k
+     */
+    public static void setKey(String k) {
+        user.key = k;
     }
 }

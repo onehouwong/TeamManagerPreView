@@ -64,7 +64,7 @@ public class MyTaskActivity extends NavigationActivity {
 
 /*cardView*/
 //        initCard();
-        final User user = User.init("test2", "teammanager");
+        final User user = User.getUser();  //= User.init("test2", "teammanager");
         updateTask(user);
 
         /*下滑刷新*/
@@ -75,8 +75,6 @@ public class MyTaskActivity extends NavigationActivity {
                 updateTask(user, swipeRefreshLayout);
             }
         });
-
-
     }
 
     private void showBottomSheet() {

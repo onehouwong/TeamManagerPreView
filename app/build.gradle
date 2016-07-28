@@ -44,8 +44,6 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.cocosw:bottomsheet:1.+@aar'
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.getui:sdk:2.8.1.0'
-    compile 'com.getui:ext:2.0.3'
     compile 'com.android.support:support-v4:+'
     compile 'com.github.shem8:material-login:1.4.0'
     repositories {
