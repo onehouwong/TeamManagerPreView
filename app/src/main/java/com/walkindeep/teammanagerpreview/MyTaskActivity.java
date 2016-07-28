@@ -23,7 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.igexin.sdk.PushManager;
+//import com.igexin.sdk.PushManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class MyTaskActivity extends NavigationActivity {
         super.onCreate(savedInstanceState);
 
 //push
-        PushManager.getInstance().initialize(this.getApplicationContext());
+        //PushManager.getInstance().initialize(this.getApplicationContext());
 
 
         /*全局导航栏*/
@@ -63,7 +63,7 @@ public class MyTaskActivity extends NavigationActivity {
 
 /*cardView*/
 //        initCard();
-        final User user = User.init("test2", "teammanager");
+        final User user = User.getUser();  //= User.init("test2", "teammanager");
         updateTask(user);
 
         /*下滑刷新*/
