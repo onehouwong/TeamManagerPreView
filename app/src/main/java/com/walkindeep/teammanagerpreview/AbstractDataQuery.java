@@ -63,6 +63,9 @@ public abstract class AbstractDataQuery {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                error.getMessage();
+                System.out.println(error.networkResponse.statusCode);
             }
         }) {
 
