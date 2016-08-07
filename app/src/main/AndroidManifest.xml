@@ -46,6 +46,13 @@
             android:label="@string/title_activity_perferance"
             android:parentActivityName=".NavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".CreateTaskActivity"
+            android:label="创建任务">
+
+        </activity>
+
     </application>
 
 </manifest>
