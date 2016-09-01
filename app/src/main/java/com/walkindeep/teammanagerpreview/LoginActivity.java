@@ -150,6 +150,9 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
 
+    protected void parseXMLWithPull(String xmlData){
+
+    }
+    }
 }
