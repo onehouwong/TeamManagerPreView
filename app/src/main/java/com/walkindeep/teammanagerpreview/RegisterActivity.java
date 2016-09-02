@@ -2,7 +2,6 @@ package com.walkindeep.teammanagerpreview;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +12,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.walkindeep.teammanagerpreview.DAO.DataPost;
+import com.walkindeep.teammanagerpreview.Project.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;

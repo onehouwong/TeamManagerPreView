@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +19,14 @@ import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.TextViewAction;
 import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
+import com.walkindeep.teammanagerpreview.CreateTaskActivity;
+import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
+import com.walkindeep.teammanagerpreview.NavigationActivity;
+import com.walkindeep.teammanagerpreview.Project.Issue;
+import com.walkindeep.teammanagerpreview.Project.Project;
+import com.walkindeep.teammanagerpreview.Project.User;
+import com.walkindeep.teammanagerpreview.R;
+import com.walkindeep.teammanagerpreview.newProject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,12 +90,17 @@ public class MyTaskActivity extends NavigationActivity {
         new BottomSheet.Builder(this).title("新建").sheet(R.menu.task_bottom_sheet).listener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent intent;
+
                 switch (which) {
-                    case R.id.buildProject:
-                        //// TODO: 2016-05-07 call buildProject UI here
+                    case R.id.buildProject://创建项目按钮
+
+                         intent = new Intent(MyTaskActivity.this, newProject.class);
+                        startActivity(intent);
                         break;
-                    case R.id.buildTask:
-                        Intent intent =new Intent(MyTaskActivity.this,CreateTaskActivity.class);
+
+                    case R.id.buildTask://创建任务按钮
+                         intent =new Intent(MyTaskActivity.this,CreateTaskActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -189,7 +202,7 @@ public class MyTaskActivity extends NavigationActivity {
                                     issue.setStatusid(3);
                                     issue.pushStatusName(mContext);
 
-                                    List<Issue> issueList = Issue.getIssueList();
+                                    List<Issue> issueList =Issue.getIssueList();
 
 
                                 }

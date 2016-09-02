@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.Project;
 
 /**
  * Created by jiahao on 2016-05-05.

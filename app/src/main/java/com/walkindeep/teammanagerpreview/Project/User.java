@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.Project;
 
 /**
  * Created by jiahao on 2016-05-01.
@@ -9,6 +9,13 @@ package com.walkindeep.teammanagerpreview;
  * 实现了单例模式
  */
 public class User {
+    private int idcount;
+    private String name;
+    private String identifier;
+    private String description;
+    private String tracker_ids;
+    private String parent_id;
+
     private static volatile User user = null;
     /**
      * 用户账号
@@ -28,6 +35,51 @@ public class User {
         this.password = password;
 
     }
+
+    public int  getidcount(){return idcount;}
+    public void setidcount(int a){this.idcount=a;};
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getParent_id() {
+        return parent_id;
+    }
+
+    public void setParent_id(String parent_id) {
+        this.parent_id = parent_id;
+    }
+
+    public String getTracker_ids() {
+        return tracker_ids;
+    }
+
+    public void setTracker_ids(String tracker_ids) {
+        this.tracker_ids = tracker_ids;
+    }
+
+
 
     /**
      * @return 已登录的用户

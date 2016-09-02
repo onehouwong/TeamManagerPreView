@@ -21,19 +21,19 @@
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MyTaskActivity"
+            android:name=".UI.MyTaskActivity"
             android:parentActivityName=".NavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
-            android:parentActivityName=".LoginActivity"
+            android:parentActivityName=".UI.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FindPassword"
-            android:parentActivityName=".LoginActivity"
+            android:parentActivityName=".UI.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".UI.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,6 +52,15 @@
             android:label="创建任务">
 
         </activity>
+
+        <activity
+            android:name=".Createmission"
+            android:parentActivityName=".Createmission"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".newProject"
+            android:parentActivityName=".newProject"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
 
     </application>
 

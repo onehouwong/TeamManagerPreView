@@ -1,11 +1,8 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.DAO;
 
 import android.content.Context;
-import android.icu.util.RangeValueIterator;
-import android.provider.DocumentsContract;
 import android.util.Base64;
 import android.util.Log;
-import android.util.Xml;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,19 +11,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.dexafree.materialList.card.Card;
+import com.walkindeep.teammanagerpreview.Project.User;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.json.XML;
 
 /**
  * Created by jiahao on 2016-05-02.
@@ -61,13 +53,9 @@ public abstract class AbstractDataQuery {
                     public void onResponse(String response) {
                         JSONObject userIssuesJSONObject = null;
                         try {
-                            if(response.substring(0,1).equals("{")) {
                                 userIssuesJSONObject = new JSONObject(response);
                                 work(userIssuesJSONObject);
-                            }
-                            else {
-                                parseXMLWithPull(response);
-                            }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -101,6 +89,5 @@ public abstract class AbstractDataQuery {
 
     /*自行实现要对后端传输过来的数据的处理方式*/
     protected abstract void work(JSONObject userIssuesJSONObject);
-    protected abstract  void parseXMLWithPull(String xmlData);
 }
 

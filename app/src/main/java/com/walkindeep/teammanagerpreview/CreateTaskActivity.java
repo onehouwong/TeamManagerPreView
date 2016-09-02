@@ -3,7 +3,6 @@ package com.walkindeep.teammanagerpreview;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.BundleCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,16 +15,18 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import org.json.JSONArray;
+import com.walkindeep.teammanagerpreview.DAO.AbstrractDataQueryWithXML;
+import com.walkindeep.teammanagerpreview.DAO.DataPost;
+import com.walkindeep.teammanagerpreview.Project.User;
+import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.XML;
 
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 
@@ -207,7 +208,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 DataPost post=new DataPost();
-                post.post("issues.json",mContext,User.getUser(),postdata);
+                post.post("issues.json",mContext, User.getUser(),postdata);
                 Log.d("Debug",postdata.toString());
             Intent intent=new Intent(CreateTaskActivity.this,MyTaskActivity.class);
             startActivity(intent);
@@ -241,7 +242,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     }
 
 
-    private class DataQuery extends AbstractDataQuery {
+    private class DataQuery extends AbstrractDataQueryWithXML {
         protected void work(JSONObject userIssuesJSONObject) {
         }
         protected   void parseXMLWithPull(String xmlData){

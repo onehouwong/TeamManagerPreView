@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Base64;
+
+import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
+import com.walkindeep.teammanagerpreview.FindPassword;
+import com.walkindeep.teammanagerpreview.Project.User;
+import com.walkindeep.teammanagerpreview.R;
+import com.walkindeep.teammanagerpreview.RegisterActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
