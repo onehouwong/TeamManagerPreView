@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.UI;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.walkindeep.teammanagerpreview.DAO.DataPost;
 import com.walkindeep.teammanagerpreview.Project.User;
+import com.walkindeep.teammanagerpreview.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

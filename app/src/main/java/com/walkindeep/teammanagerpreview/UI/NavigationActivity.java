@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.walkindeep.teammanagerpreview.R;
 import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
+import com.walkindeep.teammanagerpreview.UI.PerferanceActivity;
 
 
 public class NavigationActivity extends AppCompatActivity
