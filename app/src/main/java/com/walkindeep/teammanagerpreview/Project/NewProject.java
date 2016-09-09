@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.Project;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -30,7 +30,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
 import com.walkindeep.teammanagerpreview.DAO.DataPost;
-import com.walkindeep.teammanagerpreview.Project.User;
+import com.walkindeep.teammanagerpreview.R;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,12 +45,15 @@ import java.util.Map;
 /**
  * Created by Samsung on 2016/7/24.
  */
-public class newProject extends AppCompatActivity {
+public class NewProject extends AppCompatActivity {
+    /**新创建项目的名字*/
     private EditText name;
+    /**新创建项目的相关描述*/
     private EditText description;
+    /**项目的识别*/
     private EditText identifier;
+    /**项目的主页*/
     private EditText home;
-
     private CheckBox publicBox;
 
 
@@ -78,14 +82,7 @@ public class newProject extends AppCompatActivity {
     private Button commitProject;
 
 
-    //-----------------------------------------------------------------------------------------------------------//
-
-
-
-    //--------------------------------------------------------------------------------------------------------------//
     List<String>nametemp=new ArrayList<String>();//后台返回项目名List
-
-
     JSONObject jsonGet=new JSONObject();
     JSONObject jsonpost=new JSONObject();
     JSONObject jsonoutside=new JSONObject();
@@ -93,9 +90,6 @@ public class newProject extends AppCompatActivity {
     JSONObject jsonprojects=new JSONObject();
     JSONArray projectarray=new JSONArray();
     JSONObject enabled_module_names=new JSONObject();
-    int code;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +98,7 @@ public class newProject extends AppCompatActivity {
         setContentView(R.layout.activity_createproject);
 
 
-        //--------------------------test Button  zone---------------------------------------------------------//
+       /*测试块，用于测试show project相关函数*/
        Button buttonlist=(Button)findViewById(R.id.button2);
         buttonlist.setEnabled(false);//设置成按钮不可点击，对应函数修改过后，可删除测试
         Button buttondelete=(Button)findViewById(R.id.button3);
@@ -118,10 +112,12 @@ public class newProject extends AppCompatActivity {
                 ListingProjects(User.getUser());
             }
         });*/
+
+        //更新函数测试按钮-buttonupdateProject
         buttonupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateProject("16",User.getUser());
+                updateProject("16", User.getUser());
             }
         });
         //delete函数待修改
@@ -176,8 +172,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
-        /*
-        * project_description实现*/
+        /* project_description实现*/
         description=(EditText)findViewById(R.id.editText2);
         description.addTextChangedListener(new TextWatcher() {
             @Override
@@ -196,8 +191,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
-        /*
-        * identifier实现*/
+        /* identifier实现*/
         identifier=(EditText)findViewById(R.id.editText3);
         identifier.addTextChangedListener(new TextWatcher() {
             @Override
@@ -231,9 +225,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
-        /**
-         * 主页描述实现
-         */
+        /*主页描述实现*/
         home=(EditText)findViewById(R.id.editText4);
         home.addTextChangedListener(new TextWatcher() {
             @Override
@@ -252,20 +244,15 @@ public class newProject extends AppCompatActivity {
             }
         });
 
-
-//----------------------------------------------------------------------------------------------------------------------------------------------//
-//spinner实现
+        /*spinner实现*/
         projectsGet projectnameget=new projectsGet();
-        projectnameget.getData("projects.json",newProject.this,User.getUser());
-
-
-
+        projectnameget.getData("projects.json",NewProject.this,User.getUser());
         ArrayAdapter<String>adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, nametemp);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         final Spinner spinnerparent=(Spinner) findViewById(R.id.spinner1);
         spinnerparent.setAdapter(adapter);
-        //数据加载在work里面动态添加，可看756
-        // nametemp 的声明加在开头，可看94行
+        //数据加载在work里面动态添加
+        // nametemp 的声明加在开头
         spinnerparent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -288,14 +275,8 @@ public class newProject extends AppCompatActivity {
         });
 
 
-//-------------------------------------------------------------------------------------------------------------------------
-        /*
-        * 上级项目实现*/
-
-        /*
-        * checkBox实现*/
+        /*checkBox实现*/
         publicBox=(CheckBox)findViewById(R.id.checkBox);
-
         extendsBox=(CheckBox)findViewById(R.id.checkBox11);
         //model
         issue_track=(CheckBox)findViewById(R.id.checkBox2);
@@ -325,7 +306,7 @@ public class newProject extends AppCompatActivity {
         supporting=(CheckBox)findViewById(R.id.checkBox15);
 
 
-        //实现publicBox
+        /*实现publicBox监听*/
         publicBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -337,7 +318,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
-
+        /*实现extendsBox监听*/
         extendsBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -349,7 +330,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
-        //对于模块跟踪，
+        /*对于模块跟踪监听*/
         issue_track.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -364,7 +345,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
-
+         /*对于时间跟踪监听*/
         time_tracking.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -379,6 +360,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
+         /*对于新闻checkbox选项监听*/
         news.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -393,6 +375,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
+         /*对于文档checkbox选项监听*/
         documents.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -407,6 +390,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
+         /*对于文件checkbox选项监听*/
         files.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -421,6 +405,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
+         /*对于维基checkbox选项监听*/
         wiki.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -435,6 +420,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
+         /*对于repository checkbox选项监听*/
         repository.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -449,6 +435,8 @@ public class newProject extends AppCompatActivity {
             }
         });
 
+
+         /*对于board checkbox选项监听*/
         boards.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -463,6 +451,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
+         /*对于日历 checkbox选项监听*/
         calendar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -477,6 +466,7 @@ public class newProject extends AppCompatActivity {
             }
         });
 
+         /*对于甘特图 checkbox选项监听*/
         gantt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -494,6 +484,7 @@ public class newProject extends AppCompatActivity {
 
         //这里有个问题，在网页版上如果三个跟踪同时都没有被选择的话，在传递参数的时候，projects.json就没有对应的项目，
         // 不知道应该向哪里传数据，因此将此项目默认为必须要选择一个
+        /*模块监听-任务，功能，支持*/
         mission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -537,8 +528,7 @@ public class newProject extends AppCompatActivity {
         });
 
 
-        /*
-         *创建项目按钮的实现 */
+        /*创建项目按钮的实现 */
         commitProject = (Button) findViewById(R.id.button);
         commitProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -564,14 +554,16 @@ public class newProject extends AppCompatActivity {
 
 
     }
-    //-----------------------------------------------------------------------------------------------------------------------------------------------//
 
-    /**创建一个新项目*/
+
+    /**创建一个新项目
+     * @param user 当前用户
+     * @param  json 包含用户新创建的项目填写所有信息 */
     public void createProject(final User user, JSONObject json) {
         User tempuser= User.init("guojiahao","teammanager");
         tempuser.setidcount(user.getidcount() + 1);
 
-        final JSONObject temp = json;
+       // final JSONObject temp = json;
         try {
             jsonoutside.put("id", user.getidcount());
             jsonoutside.put("name", json.getString("name"));
@@ -594,21 +586,21 @@ public class newProject extends AppCompatActivity {
             @Override
             protected void responseHandle(JSONObject response) {
                 Log.e("response", response.toString());
-                  Toast.makeText(newProject.this,"创建成功",Toast.LENGTH_SHORT).show();
+                  Toast.makeText(NewProject.this,"创建成功",Toast.LENGTH_SHORT).show();
 
             };
 
             public void onErrorResponse(VolleyError error) {
                 //此处无法get到代码。如果id冲突，会退出。。。待解决
                 if(error.networkResponse.statusCode==422)
-                    Toast.makeText(newProject.this,"创建失败，该id已经被使用，错误代码422",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewProject.this,"创建失败，该id已经被使用，错误代码422",Toast.LENGTH_SHORT).show();
 
             }
         }
 
 
 
-        //    abstractdata.getData("projects.json",newProject.this,User.getUser());
+        //    abstractdata.getData("projects.json",NewProject.this,User.getUser());
         newProjectHandle newprojecthandle = new newProjectHandle();
         newprojecthandle.post("projects.json", this,user, jsonproject);
         //
@@ -616,13 +608,9 @@ public class newProject extends AppCompatActivity {
     };
 
 
-
-
-
-
-
-
     /*显示项目列表*///--------------------------------------------------------------------------
+    /**显示当前用户所有项目的列表
+     * @param user 当前用户*/
     public void ListingProjects(final User user){
             /*获取后台数据*/
 
@@ -673,7 +661,7 @@ public class newProject extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        projectAdapter adapter = new projectAdapter(newProject.this, R.layout.projectlistlayout, projectlist);
+        projectAdapter adapter = new projectAdapter(NewProject.this, R.layout.projectlistlayout, projectlist);
         ListView listview = (ListView) findViewById(R.id.showprojectlistlayout);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -693,10 +681,6 @@ public class newProject extends AppCompatActivity {
     }
 
 
-
-
-
-
     //展示model
     public void setCheckStatus(CheckBox c,String paramter) {
         try {
@@ -707,8 +691,8 @@ public class newProject extends AppCompatActivity {
     };
 
 
-    /**
-     * 展示其中一个项目*///------------------------------------------------------------------------------------------
+    /** 展示其中一个项目
+     * @param id 对应项目的id */
     public void showingProject(String id) {
         projectsGet getAProject=new projectsGet();
         for(int i=0;i<projectarray.length();i++) {
@@ -746,11 +730,12 @@ public class newProject extends AppCompatActivity {
 
     };
 
-    /*
-    * 更新项目*///----------------------------------------------------------------------------------------
+    /**更新项目
+     * @param id 想要更新的项目id
+     * @param user 想要更新的对应的user账户*///----------------------------------------------------------------------------------------
     public void updateProject(String id,final User user) {
         projectsGet updateproject=new projectsGet();
-        updateproject.getData("projects.json",newProject.this,User.getUser());
+        updateproject.getData("projects.json",NewProject.this,User.getUser());
         if(id==null)
             showListView(projectarray);
         else
@@ -759,8 +744,9 @@ public class newProject extends AppCompatActivity {
     };
 
 
-    /**
-     * 删除项目
+    /**删除项目
+     * @param id 想要删除项目对应的id
+     * @param user 被删除项目所在的用户账户
      */
     public void deleteProject(String id, final User user){
         // Instantiate the RequestQueue.
@@ -804,8 +790,7 @@ public class newProject extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-
-
+    /*自定义projectget，从后台得到数据*/
     class projectsGet extends AbstractDataQuery {
         @Override
         protected void work(JSONObject userIssuesJSONObject) {

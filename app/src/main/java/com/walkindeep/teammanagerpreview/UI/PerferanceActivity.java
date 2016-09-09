@@ -1,19 +1,18 @@
-package com.walkindeep.teammanagerpreview;
+package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.gigamole.library.ArcProgressStackView;
+import com.walkindeep.teammanagerpreview.R;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * 没用的。

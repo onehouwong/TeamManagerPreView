@@ -21,12 +21,10 @@ import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
 import com.walkindeep.teammanagerpreview.CreateTaskActivity;
 import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
-import com.walkindeep.teammanagerpreview.NavigationActivity;
+import com.walkindeep.teammanagerpreview.Project.NewProject;
 import com.walkindeep.teammanagerpreview.Project.Issue;
-import com.walkindeep.teammanagerpreview.Project.Project;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
-import com.walkindeep.teammanagerpreview.newProject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,7 +93,7 @@ public class MyTaskActivity extends NavigationActivity {
                 switch (which) {
                     case R.id.buildProject://创建项目按钮
 
-                         intent = new Intent(MyTaskActivity.this, newProject.class);
+                         intent = new Intent(MyTaskActivity.this, NewProject.class);
                         startActivity(intent);
                         break;
 

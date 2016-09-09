@@ -17,7 +17,6 @@ import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
 import com.walkindeep.teammanagerpreview.FindPassword;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
-import com.walkindeep.teammanagerpreview.RegisterActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
