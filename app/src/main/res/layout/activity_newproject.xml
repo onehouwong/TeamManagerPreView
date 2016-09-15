@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="新建项目"
+        android:textSize="24sp"
+        />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.11"
+        android:weightSum="1">
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.03">
+
+        <TextView
+            android:id="@+id/tracker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="跟踪*     "
+            android:layout_weight="0.00" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner1"
+             />
+
+        <HorizontalScrollView
+            android:layout_width="231dp"
+            android:layout_height="13dp"
+            android:id="@+id/horizontalScrollView2" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.04">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="主题*    "
+            android:id="@+id/theme" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/themeedit"
+            android:maxLength="20"
+            android:layout_weight="1" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <HorizontalScrollView
+            android:layout_width="227dp"
+            android:layout_height="23dp"
+            android:id="@+id/horizontalScrollView"
+            android:layout_weight="0.05" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_weight="0.20" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.04">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="描述*    "
+            android:id="@+id/description" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/descedit"
+            android:maxLength="140"
+            android:layout_weight="1" />
+    </TableRow>
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <HorizontalScrollView
+            android:layout_width="227dp"
+            android:layout_height="23dp"
+            android:id="@+id/horizontalScrollView7"
+            android:layout_weight="0.05" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/textView3"
+            android:layout_weight="0.20" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.03">
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="状态*     "
+            android:layout_weight="0.00" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner2"
+            android:layout_weight="0.01" />
+
+        <HorizontalScrollView
+            android:layout_width="231dp"
+            android:layout_height="13dp"
+            android:id="@+id/horizontalScrollView3" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.09">
+
+        <TextView
+        android:id="@+id/startDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始日期*     "
+        />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:text="选择日期"
+            android:id="@+id/sbutton" />
+        <TextView
+            android:id="@+id/endDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    计划完成日期*     "
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:text="选择日期"
+            android:id="@+id/ebutton" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08">
+
+        <TextView
+            android:id="@+id/priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="优先级*     "
+            android:layout_weight="0.00" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner3"
+            android:layout_weight="0.01" />
+
+        <HorizontalScrollView
+            android:layout_width="231dp"
+            android:layout_height="13dp"
+            android:id="@+id/horizontalScrollView4" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08">
+
+        <TextView
+            android:id="@+id/assign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="指派给*     "
+            android:layout_weight="0.00" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/assign_spinner"
+            android:layout_weight="0.01" />
+
+        <HorizontalScrollView
+            android:layout_width="231dp"
+            android:layout_height="13dp"
+            android:id="@+id/horizontalScrollView5" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08">
+
+        <TextView
+            android:id="@+id/done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="完成程度*     "
+            android:layout_weight="0.00" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/done_spinner"
+            android:layout_weight="0.01" />
+
+        <HorizontalScrollView
+            android:layout_width="231dp"
+            android:layout_height="13dp"
+            android:id="@+id/horizontalScrollView6" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08">
+
+        <TextView
+            android:id="@+id/file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文件       "
+            android:layout_weight="0.00" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:text="导入文件"
+            android:id="@+id/importfile" />
+
+
+    </TableRow>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提交"
+        android:id="@+id/createProject" />
+</LinearLayout>

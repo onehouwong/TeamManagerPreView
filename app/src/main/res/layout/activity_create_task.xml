@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="跟踪*"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/followSpinner"
+            android:entries="@array/spingarr1"></Spinner>
+        <CheckBox
+            android:text="私有"
+            android:id="@+id/checkbox"
+            android:layout_height="match_parent"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="主题*"/>
+        <EditText
+            android:id="@+id/themeText"
+            android:layout_height="wrap_content"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="描述"/>
+        <EditText
+            android:id="@+id/describeText"
+            android:layout_height="wrap_content"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="状态*"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/stateSpinner"
+            android:entries="@array/spingarr2"></Spinner>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="父任务"/>
+        <EditText
+            android:id="@+id/fatherText"
+            android:layout_height="wrap_content"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="优先级*"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/prioritySpinner"
+            android:entries="@array/spingarr3"></Spinner>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="开始日期"/>
+        <EditText
+            android:id="@+id/temp1"
+            android:layout_height="wrap_content"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="指派给"/>
+        <Spinner
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/assignSpinner"></Spinner>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="计划完成日期"/>
+        <EditText
+            android:id="@+id/temp2"
+            android:layout_height="wrap_content"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="预期时间"/>
+        <EditText
+            android:id="@+id/time"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="小时"/>
+
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="%完成"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/finishSpinner"
+            android:entries="@array/spingarr4"></Spinner>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="文件"/>
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/choosefile"
+            android:text="选择文件"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="（最大尺寸：5MB）"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="跟踪者"/>
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="创建"
+            android:id="@+id/createTaskButton"/>
+    </TableRow>
+</TableLayout>

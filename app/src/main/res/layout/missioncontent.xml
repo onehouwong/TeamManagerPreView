@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+               android:id="@+id/missiontheme"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="10dp"
+                 android:gravity="left"
+                 android:text="工作主题"
+                 android:textColor="#FFFFFF"    ></TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/missionNumber"
+        android:text="任务编号："/>
+
+    <EditText
+                 android:id="@+id/edit_missionTheme"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="10dp"
+                 android:layout_marginRight="10dp"
+                 android:gravity="left"
+                 android:hint="请输入任务主题"
+                 android:inputType="none"
+                 android:digits="abcdefghigklmnopqrstuvwxyz1234567890_"    ></EditText>
+    <TextView
+        android:id="@+id/missionContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="left"
+        android:text="任务内容"
+        android:textColor="#FFFFFF"    ></TextView>
+    <EditText
+        android:id="@+id/edit_missionContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="left"
+        android:hint="请输入任务内容"
+        android:inputType="none"
+        android:digits="abcdefghigklmnopqrstuvwxyz1234567890_"   ></EditText>
+</LinearLayout>

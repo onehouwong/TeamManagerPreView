@@ -17,23 +17,23 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".NavigationActivity"
+            android:name=".UI.NavigationActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MyTaskActivity"
-            android:parentActivityName=".NavigationActivity"
+            android:name=".UI.MyTaskActivity"
+            android:parentActivityName=".UI.NavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
-            android:parentActivityName=".LoginActivity"
+            android:name=".UI.RegisterActivity"
+            android:parentActivityName=".UI.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FindPassword"
-            android:parentActivityName=".LoginActivity"
+            android:parentActivityName=".UI.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".UI.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,10 +42,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PerferanceActivity"
+            android:name=".UI.PerferanceActivity"
             android:label="@string/title_activity_perferance"
-            android:parentActivityName=".NavigationActivity"
+            android:parentActivityName=".UI.NavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".CreateTaskActivity"
+            android:label="创建任务">
+
+        </activity>
+
+        <activity
+            android:name=".Createmission"
+            android:parentActivityName=".Createmission"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Project.NewProject"
+            android:parentActivityName=".Project.NewProject"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
     </application>
 
 </manifest>

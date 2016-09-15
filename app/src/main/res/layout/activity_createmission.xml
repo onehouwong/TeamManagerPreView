@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_NewTW"
+        android:text="创建一个新任务"
+        android:gravity="center"
+        android:textSize="24sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/missionEditText"
+        android:text="工作内容"
+        android:textSize="18sp"
+        />
+
+
+    <TextView
+        android:id="@+id/managerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加负责人"/>
+    <TextView
+        android:id="@+id/startTimeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始时间"
+        />
+    <TextView
+        android:id="@+id/endTimeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="截止时间"
+        />
+
+    <TextView
+        android:id="@+id/PriorityButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="优先级选择"/>
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="保存"/>
+</LinearLayout>
