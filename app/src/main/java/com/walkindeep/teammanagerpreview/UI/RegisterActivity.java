@@ -26,15 +26,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
     final Context context = this;
-    Button registerButton;
-    EditText idText, passwordText, repasswordText, lastNameText, firstNameText, emailText;
-    TextView login;
+    Button registerButton; //注册按钮
+    EditText idText, passwordText, repasswordText, lastNameText, firstNameText, emailText; //用户输入信息的TextView
+    TextView login; //转入登陆界面的TextView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //初始化UI组件
         idText = (EditText) findViewById(R.id.input_id);
         passwordText = (EditText) findViewById(R.id.input_password);
         repasswordText = (EditText) findViewById(R.id.input_repassword);
@@ -66,26 +67,30 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     * 用于注册的函数
+     * 注册的主函数
      */
     public boolean signUp() {
         Log.d(TAG, "Sign up");
 
+        // 先对用户输入的用户名、密码、重复密码、姓名、email等信息进行验证，如果不符合要求修改
         if (!validate()) {
             onSignUpFailed("注册失败，请检查以上信息");
             return false;
         }
-        registerButton.setEnabled(false);
+        registerButton.setEnabled(false); //点击注册按钮到注册完成的时间里，不允许用户再次点击按钮
 
         /* 创建一个发送给后台的JSONObject，内包含注册用户的信息 */
         JSONObject userJSONObject = new JSONObject();
         String id, email, password, firstName, lastName;
         try {
+            // 从UI组件中获取用户注册信息
             id = idText.getText().toString();
             email = emailText.getText().toString();
             password = passwordText.getText().toString();
             firstName = firstNameText.getText().toString();
             lastName = lastNameText.getText().toString();
+
+            // 将用户信息包装到Json文件中，即userJSONObject
             JSONObject userInfo = new JSONObject();
             userInfo.put("login", id);
             userInfo.put("firstname", firstName);
@@ -97,39 +102,38 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        /* 像后台发送JSON并响应处理 */
+        //向后台发送JSON并响应处理
         User.init("guojiahao", "teammanager"); // 必须借助管理员账号才能注册，这样是否会存在安全性问题，待解决
+        // 初始化一个RegisterDataPost对象，并使用其向后台发送json文件，发送时使用管理员身份
         RegisterDataPost registerDataPost = new RegisterDataPost();
         registerDataPost.post("users.json", context, User.getUser(), userJSONObject);
-
         return true;
     }
 
 
     /**
-     * 表示注册成功的场景
+     * 表示注册成功的场景，用于处理界面信息以及活动转换
      */
     public void onSignUpSuccess() {
-        registerButton.setEnabled(true);
+        registerButton.setEnabled(true); // 重新允许用户点击按钮
         setResult(RESULT_OK, null);
-        finish();
+        finish(); //退出Register活动，返回Login活动
     }
 
     /**
      * 表示注册失败的场景
      */
     public void onSignUpFailed(String message) {
-        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
-        registerButton.setEnabled(true);
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show(); //显示注册失败的消息
+        registerButton.setEnabled(true); // 重新允许用户点击按钮
     }
 
     /**
-     * 判断注册是否成功的函数
-     *
+     * 用于检验用户输入信息是否都合法的函数
      * @return 注册是否成功的boolean值
      */
     public boolean validate() {
-        boolean valid = true;
+        boolean valid = true; //函数最终返回值，先初始化为true，中途有一项不符合则置为false
 
         String id = idText.getText().toString();
         String email = emailText.getText().toString();
@@ -138,6 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
         String firstName = firstNameText.getText().toString();
         String lastName = lastNameText.getText().toString();
 
+        //登录名检查，不能为空
         if (id.isEmpty()) {
             idText.setError("登录名不能为空");
             valid = false;
@@ -145,6 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
             idText.setError(null);
         }
 
+        //email检查，不能为空，且格式需要符合电子邮件格式
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("请输入合法的电子邮件地址");
             valid = false;
@@ -152,6 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
             emailText.setError(null);
         }
 
+        //密码检查，不能为空，且长度要小于8
         if (password.isEmpty()) {
             passwordText.setError("密码不能为空");
             valid = false;
@@ -162,6 +169,7 @@ public class RegisterActivity extends AppCompatActivity {
             passwordText.setError(null);
         }
 
+        //重复密码检查，不能为空，且需要与前面输入的密码一致
         if (repassword.isEmpty()) {
             repasswordText.setError("重复密码不能为空");
             valid = false;
@@ -172,6 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
             repasswordText.setError(null);
         }
 
+        //名字检查，不能为空
         if (firstName.isEmpty()) {
             firstNameText.setError("名字不能为空");
             valid = false;
@@ -179,6 +188,7 @@ public class RegisterActivity extends AppCompatActivity {
             firstNameText.setError(null);
         }
 
+        //姓氏检查，不能为空
         if (lastName.isEmpty()) {
             lastNameText.setError("姓氏不能为空");
             valid = false;
@@ -189,9 +199,15 @@ public class RegisterActivity extends AppCompatActivity {
         return valid;
     }
 
-
+    /**
+     * 继承DataPost类，针对register活动，用于向后台发送json文件
+     */
     private class RegisterDataPost extends DataPost {
 
+        /**
+         * 处理post函数向后台发送json文件后返回的response，表示注册成功
+         * @param response 后台接受json文件后返回的数据结构
+         */
         @Override
         protected void responseHandle(JSONObject response) {
 
@@ -202,21 +218,21 @@ public class RegisterActivity extends AppCompatActivity {
             progressDialog.setMessage("正在创建账号...");
             progressDialog.show();
 
-
-            // TODO: Implement your own signup logic here.
-
+            // Handler类，3000ms后会执行run里面的函数内容
             new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
-                            // On complete call either onSignUpSuccess or onSignUpFailed
-                            // depending on success
-                            onSignUpSuccess();
-                            progressDialog.dismiss();
+                            onSignUpSuccess(); //调用注册成功的函数，处理一些界面信息即转场
+                            progressDialog.dismiss(); //过度信息将在3000ms后关闭
                         }
                     }, 3000);
 
         }
 
+        /**
+         * 用于处理注册失败的情况
+         * @param error 后台接收json文件后返回的一个错误信息
+         */
         @Override
         protected void errorResponseHandle(VolleyError error) {
             error.printStackTrace();
