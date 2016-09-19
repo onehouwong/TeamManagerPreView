@@ -58,13 +58,15 @@ public class MyTaskActivity extends NavigationActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
+        右下角+号 浮动按钮
+         */
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButtionTask);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 showBottomSheet();
-
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -218,7 +220,14 @@ public class MyTaskActivity extends NavigationActivity {
         });
     }
 
+    /**
+     * 获取用户的issue数据
+     */
     class DataHandler extends AbstractDataQuery {
+        /**
+         *
+         * @param userIssuesJSONObject
+         */
         @Override
         protected void work(JSONObject userIssuesJSONObject) {
             Card[] cards = jsonToCards(userIssuesJSONObject);

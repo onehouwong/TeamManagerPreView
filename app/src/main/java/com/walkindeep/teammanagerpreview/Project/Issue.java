@@ -1,9 +1,17 @@
 package com.walkindeep.teammanagerpreview.Project;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.Toast;
 
+import com.dexafree.materialList.card.Card;
+import com.dexafree.materialList.card.CardProvider;
+import com.dexafree.materialList.card.OnActionClickListener;
+import com.dexafree.materialList.card.action.TextViewAction;
 import com.walkindeep.teammanagerpreview.DAO.DataPost;
+import com.walkindeep.teammanagerpreview.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -252,4 +260,29 @@ public class Issue {
 
     }
 
+    public static void updateIssueList(List<Issue> toDoIssueList, JSONObject userIssuesJSONObjectTemp) {
+        JSONArray userIssuesJSONArray = null;
+        try {
+            userIssuesJSONArray = userIssuesJSONObjectTemp.getJSONArray("issues");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /*用于存储所有issue的list*/
+        toDoIssueList.clear();
+
+        for (int i = 0; i < userIssuesJSONArray.length(); i++) {
+            try {
+                /*创建issue类*/
+                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"),
+                        userIssuesJSONArray.getJSONObject(i).getString("description"),
+                        userIssuesJSONArray.getJSONObject(i).getInt("id"));
+                toDoIssueList.add(issue);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 }
