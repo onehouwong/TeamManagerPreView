@@ -47,6 +47,7 @@ public class NetworkRequestController {
 
     private NetworkRequestController() {
         mRequestQueue = getRequestQueue();
+
     }
 
 

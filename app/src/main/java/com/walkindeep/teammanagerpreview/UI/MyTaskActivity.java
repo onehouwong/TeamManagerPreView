@@ -20,15 +20,10 @@ import com.dexafree.materialList.card.action.TextViewAction;
 import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
 import com.walkindeep.teammanagerpreview.CreateTaskActivity;
-import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
 import com.walkindeep.teammanagerpreview.Project.NewProject;
 import com.walkindeep.teammanagerpreview.Project.Issue;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 //import com.igexin.sdk.PushManager;
 

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Base64;
 
-import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.walkindeep.teammanagerpreview.DAO.Constant;
+import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
 
@@ -22,6 +29,8 @@ import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -81,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * 用于登录的函数,利用了HTTP基本认证的方法
+     *
      * @param userName 登录用户名
      * @param password 用户密码
      */
@@ -96,9 +106,61 @@ public class LoginActivity extends AppCompatActivity {
                 int code = data.getInt("code");
                 if (code == 200) {  // 账号密码正确的情况
                     User.init(userName, password);
+
                     //下面代码用于获取user的key值并记录在user类中
-                    LoginDataQuery keyQuery = new LoginDataQuery();
-                    keyQuery.getData("users/current.json", context, User.getUser());
+
+                    String url = Constant.WEBURL + "users/current.json";
+
+                    final User user = User.getUser();
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    JSONObject userIssuesJSONObject = null;
+                                    try {
+                                        userIssuesJSONObject = new JSONObject(response);
+
+                                        try {
+                                            //以下代码将登陆成功后获得的key值记录在User类中，在getData后自动执行
+                                            JSONObject userInfo = userIssuesJSONObject.getJSONObject("user");
+                                            String key = userInfo.getString("api_key");
+                                            User.setKey(key);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            error.getMessage();
+                            System.out.println(error.networkResponse.statusCode);
+                            Log.e("error", error.networkResponse.toString());
+                        }
+                    }) {
+
+                        //            在头部添加用户的账号密码以便进行HTTP基本认证
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<String, String>();
+                            String creds = String.format("%s:%s", user.getUsername(), user.getPassword());
+                            String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+                            params.put("Authorization", auth);
+                            return params;
+                        }
+                    };
+// Add the request to the RequestQueue.
+                    NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
+                    networkRequestController.getRequestQueue().add(stringRequest);
+
                     // Toast.makeText(getBaseContext(), "登录成功" + User.getKey(), Toast.LENGTH_LONG).show();
 
                     //进入主界面
@@ -142,22 +204,4 @@ public class LoginActivity extends AppCompatActivity {
         }).start();
     }
 
-    /**
-     * 用于处理登录界面与后台进行数据交互的类，继承了AbstractDataQuery。
-     * 这里的类是基于登录成功的情况，从服务器后台得到对应的key值
-     */
-    private class LoginDataQuery extends AbstractDataQuery {
-        protected void work(JSONObject userJSONObject) {
-            try {
-                //以下代码将登陆成功后获得的key值记录在User类中，在getData后自动执行
-                JSONObject userInfo = userJSONObject.getJSONObject("user");
-                String key = userInfo.getString("api_key");
-                User.setKey(key);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-    protected void parseXMLWithPull(String xmlData){ }
-    }
 }

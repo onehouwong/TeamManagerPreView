@@ -4,7 +4,6 @@ package com.walkindeep.teammanagerpreview.Project;
  * Created by jiahao on 2016-05-01.
  */
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
@@ -15,10 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.dexafree.materialList.card.Card;
-import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
 import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
-import com.walkindeep.teammanagerpreview.MyApplication;
 import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
 
 import org.json.JSONException;
@@ -226,20 +222,5 @@ public class User {
      */
     public static void setKey(String k) {
         user.key = k;
-    }
-
-    /**
-     * 获取用户的issue数据
-     */
-    class IssueDataGetter extends AbstractDataQuery {
-        /**
-         *
-         * @param userIssuesJSONObject
-         */
-        @Override
-        protected void work(JSONObject userIssuesJSONObject) {
-
-        }
-
     }
 }

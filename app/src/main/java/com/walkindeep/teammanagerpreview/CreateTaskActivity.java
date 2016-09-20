@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,23 +16,24 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.walkindeep.teammanagerpreview.DAO.AbstrractDataQueryWithXML;
-import com.walkindeep.teammanagerpreview.DAO.DataPost;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.walkindeep.teammanagerpreview.Controller.Parser;
+import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  * 用于创建任务的活动
@@ -80,8 +82,51 @@ public class CreateTaskActivity extends AppCompatActivity {
         dataAssignSpinner.add("<<我>>");
 
 
-        DataQuery query = new DataQuery();//创建一个DataQuery的实例
-        query.getData("projects/1/memberships.xml", this, User.getUser());//调用API接口
+//        DataQuery query = new DataQuery();//创建一个DataQuery的实例
+//        query.getData("projects/1/memberships.xml", this, User.getUser());//调用API接口
+
+        String parameter = "projects/1/memberships.xml";
+        String url = "http://teammanager.tk/" + parameter;
+
+        final NetworkRequestController networkRequestController = NetworkRequestController.getInstance();//获取网络控制器
+
+     final   User user = User.getUser();
+
+        //创建请求
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject userIssuesJSONObject = null;
+
+                        if(response.substring(0,1).equals("{")) {
+                        }
+                        else {
+                           Parser.parseXMLWithPull(response, dataAssignSpinner);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                error.getMessage();
+                System.out.println(error.networkResponse.statusCode);
+                Log.e("error",error.networkResponse.toString());
+            }
+        }) {
+
+            //            在头部添加用户的账号密码以便进行HTTP基本认证
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<String, String>();
+                String creds = String.format("%s:%s", user.getUsername(), user.getPassword());
+                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+                params.put("Authorization", auth);
+                return params;
+            }
+        };
+        networkRequestController.getRequestQueue().add(stringRequest);//把request添加到全局网络请求队列
+
 
 
 
@@ -216,8 +261,30 @@ public class CreateTaskActivity extends AppCompatActivity {
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
-                DataPost post=new DataPost();
-                post.post("issues.json",mContext, User.getUser(),postdata);
+
+                String parameter="issues.json";
+                String url = "http://teammanager.tk/" + parameter;
+
+                //创建用于post的请求
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                        postdata,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d("!", "response -> " + response.toString());//在android studio中打印response，正式版应移除这行
+                            }
+
+
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("ERROR", "onErrorResponse");//在android studio中打印错误信息,正式版应移除
+
+                    }
+                });
+                //添加post请求到全局网络请求队列
+                networkRequestController.getRequestQueue().add(jsonObjectRequest);
+
                 Log.d("Debug",postdata.toString());
             Intent intent=new Intent(CreateTaskActivity.this,MyTaskActivity.class);
             startActivity(intent);
@@ -248,66 +315,5 @@ public class CreateTaskActivity extends AppCompatActivity {
             return dialog;
         }
         return null;
-    }
-
-    /**
-     * 用来解析XML
-     * 由于前面的查询只能解析Json,所以这里新建一个类
-     */
-    private class DataQuery extends AbstrractDataQueryWithXML {
-        /**
-         *
-         * @param xmlData   API接口
-         * @return dataAssignSpinner的数据
-         */
-        protected   void parseXMLWithPull(String xmlData){
-            try {
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                XmlPullParser xmlPullParser = factory.newPullParser();
-                xmlPullParser.setInput(new StringReader(xmlData));
-                int eventType =xmlPullParser.getEventType();
-                //由于对应的API接口只有ID,PROJECT,USER这几个参数,所以建立对应字符串对象
-                String id="";
-                String project ="";
-                String user ="";
-                List<String> role =new ArrayList<String>();
-                while(eventType!=XmlPullParser.END_DOCUMENT){//XmlPullParser.END_DOCUMENT是指XML结尾
-                    String nodeName =xmlPullParser.getName();
-
-                    switch (eventType){
-                        //开始解析某个结点
-                        case XmlPullParser.START_TAG:{
-                            if("id".equals(nodeName)){//判断是不是ID所对应的数据
-                                id=xmlPullParser.nextText();
-                            }
-                            else if("user".equals(nodeName)){//判断是不是user所对应的属性
-                               String temp= xmlPullParser.getAttributeValue(null,"name");
-                               dataAssignSpinner.add(temp);
-                                Log.d("Debug",temp);
-                            }
-                            break;
-                        }
-                        case XmlPullParser.END_TAG:{
-
-                            break;
-                        }
-                    }
-                    eventType=xmlPullParser.next();//获取一个名字后,进行下一个解析
-                }
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
-    /**
-     * 继承DataPost类
-     * 为了重写responseHandle,让用户体验更加友好
-     * 内容暂时空着
-     */
-    public class TaskDataPost extends DataPost{
-        protected void responseHandle(JSONObject response) {
-
-        }
     }
 }

@@ -11,8 +11,12 @@ import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.walkindeep.teammanagerpreview.DAO.DataPost;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.walkindeep.teammanagerpreview.DAO.Constant;
+import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
 
@@ -104,9 +108,49 @@ public class RegisterActivity extends AppCompatActivity {
 
         //向后台发送JSON并响应处理
         User.init("guojiahao", "teammanager"); // 必须借助管理员账号才能注册，这样是否会存在安全性问题，待解决
-        // 初始化一个RegisterDataPost对象，并使用其向后台发送json文件，发送时使用管理员身份
-        RegisterDataPost registerDataPost = new RegisterDataPost();
-        registerDataPost.post("users.json", context, User.getUser(), userJSONObject);
+
+        String url = Constant.WEBURL + "users.json";
+
+        //创建一个用于post的请求
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                userJSONObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("!", "response -> " + response.toString());//在android studio中打印response，正式版应移除这行
+ /* 定义过度信息 将在成功注册后展示 */
+                        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this,
+                                R.style.AppTheme);
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setMessage("正在创建账号...");
+                        progressDialog.show();
+
+                        // Handler类，3000ms后会执行run里面的函数内容
+                        new android.os.Handler().postDelayed(
+                                new Runnable() {
+                                    public void run() {
+                                        onSignUpSuccess(); //调用注册成功的函数，处理一些界面信息即转场
+                                        progressDialog.dismiss(); //过度信息将在3000ms后关闭
+                                    }
+                                }, 3000);
+                    }
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("ERROR", "onErrorResponse");//在android studio中打印错误信息,正式版应移除
+                error.printStackTrace();
+            /* 这里有个问题 貌似无法获取错误信息，而在输入的是否我们已经提前对每个字段进行了检查
+             * 所以这里应该只有唯一一个问题了，那就是账号重复注册，但还需要通过测试debug */
+                onSignUpFailed("注册失败，" + "账号已被注册");
+            }
+        });
+
+        //把post请求添加到全局队列中
+        NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
+        networkRequestController.getRequestQueue().add(jsonObjectRequest);
+
         return true;
     }
 
@@ -199,46 +243,5 @@ public class RegisterActivity extends AppCompatActivity {
         return valid;
     }
 
-    /**
-     * 继承DataPost类，针对register活动，用于向后台发送json文件
-     */
-    private class RegisterDataPost extends DataPost {
 
-        /**
-         * 处理post函数向后台发送json文件后返回的response，表示注册成功
-         * @param response 后台接受json文件后返回的数据结构
-         */
-        @Override
-        protected void responseHandle(JSONObject response) {
-
-            /* 定义过度信息 将在成功注册后展示 */
-            final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this,
-                    R.style.AppTheme);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("正在创建账号...");
-            progressDialog.show();
-
-            // Handler类，3000ms后会执行run里面的函数内容
-            new android.os.Handler().postDelayed(
-                    new Runnable() {
-                        public void run() {
-                            onSignUpSuccess(); //调用注册成功的函数，处理一些界面信息即转场
-                            progressDialog.dismiss(); //过度信息将在3000ms后关闭
-                        }
-                    }, 3000);
-
-        }
-
-        /**
-         * 用于处理注册失败的情况
-         * @param error 后台接收json文件后返回的一个错误信息
-         */
-        @Override
-        protected void errorResponseHandle(VolleyError error) {
-            error.printStackTrace();
-            /* 这里有个问题 貌似无法获取错误信息，而在输入的是否我们已经提前对每个字段进行了检查
-             * 所以这里应该只有唯一一个问题了，那就是账号重复注册，但还需要通过测试debug */
-            onSignUpFailed("注册失败，" + "账号已被注册");
-        }
-    }
 }
