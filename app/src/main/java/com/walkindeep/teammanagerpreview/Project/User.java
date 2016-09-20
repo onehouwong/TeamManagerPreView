@@ -4,6 +4,7 @@ package com.walkindeep.teammanagerpreview.Project;
  * Created by jiahao on 2016-05-01.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
@@ -18,10 +19,12 @@ import com.dexafree.materialList.card.Card;
 import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
 import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
 import com.walkindeep.teammanagerpreview.MyApplication;
+import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +44,11 @@ public class User {
     /**
      * 用户的待完成的任务的列表
      */
-    private List<Issue> toDoIssueList =null;
+    private List<Issue> toDoIssueList =new ArrayList<>();
 
+    public List<Issue> getToDoIssueList() {
+        return toDoIssueList;
+    }
 
     private static volatile User user = null;
     /**
@@ -119,7 +125,7 @@ public class User {
     /**
      * 更新用户的待完成任务列表
      */
-    public void updateToDoIssueList() {
+    public void updateToDoIssueList(final Context context) {
 //        IssueDataGetter issueDataGetter = new IssueDataGetter();
 //        issueDataGetter.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
 
@@ -135,6 +141,10 @@ public class User {
                             userIssueJSONObject = new JSONObject(response);
                             Issue.updateIssueList(toDoIssueList, userIssueJSONObject);
                             //从json分析数据，更新toDoIssueList
+
+                            MyTaskActivity myTaskActivity=(MyTaskActivity) context;
+                          myTaskActivity.setCardsToUI(myTaskActivity.buildCardsList());//设置卡片
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

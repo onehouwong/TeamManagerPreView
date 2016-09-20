@@ -1,15 +1,8 @@
 package com.walkindeep.teammanagerpreview.Project;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.Toast;
 
-import com.dexafree.materialList.card.Card;
-import com.dexafree.materialList.card.CardProvider;
-import com.dexafree.materialList.card.OnActionClickListener;
-import com.dexafree.materialList.card.action.TextViewAction;
 import com.walkindeep.teammanagerpreview.DAO.DataPost;
-import com.walkindeep.teammanagerpreview.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +16,11 @@ import java.util.List;
  * 任务类 对应Redmine中的任务
  */
 public class Issue {
-    private static List<Issue> issueList = new ArrayList<>();
+    /**
+     * 待完成的任务列表
+     */
+    private static List<Issue> toDoIssueList = new ArrayList<>();
+
     private int issue_id;
     private String projectId;
     private String trackerId;
@@ -52,8 +49,8 @@ public class Issue {
      * 获取该用户所有的issue
      * @return 装载有所有issue的list
      */
-    public static List<Issue> getIssueList() {
-        return issueList;
+    public static List<Issue> getToDoIssueList() {
+        return toDoIssueList;
     }
 
 

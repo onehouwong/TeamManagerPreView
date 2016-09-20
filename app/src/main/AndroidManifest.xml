@@ -53,10 +53,6 @@
 
         </activity>
 
-        <activity
-            android:name=".Createmission"
-            android:parentActivityName=".Createmission"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Project.NewProject"
             android:parentActivityName=".Project.NewProject"
             android:theme="@style/AppTheme.NoActionBar"></activity>
