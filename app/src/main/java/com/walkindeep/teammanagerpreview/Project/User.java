@@ -107,6 +107,20 @@ public class User {
     }
 
     /**
+     * 注销用函数
+     * @return 当前账户的User
+     */
+    public static User logout() {
+        if(user == null) // user未被初始化，返回null
+            return null;
+        else { //user已被初始化
+            User temp = user;
+            user = null;
+            return temp;
+        }
+    }
+
+    /**
      * 获取账号
      *
      * @return 账号
@@ -134,7 +148,6 @@ public class User {
 
     /**
      * 设置key
-     *
      * @param k
      */
     public static void setKey(String k) {

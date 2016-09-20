@@ -29,7 +29,7 @@
             android:parentActivityName=".UI.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FindPassword"
+            android:name=".UI.FindPasswordActivity"
             android:parentActivityName=".UI.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -41,6 +41,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".UI.SettingsActivity"
+            android:label="设置"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".UI.PerferanceActivity"
             android:label="@string/title_activity_perferance"

@@ -26,14 +26,23 @@
 
     <item android:title="个人">
         <menu>
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/icon_calendar"
+            android:title="日历" />
+        <item
+            android:id="@+id/nav_performance"
+            android:icon="@drawable/icon_performance"
+            android:title="绩效" />
+    </menu>
+    </item>
+
+    <item android:title="其他">
+        <menu>
             <item
-                android:id="@+id/nav_calendar"
-                android:icon="@drawable/icon_calendar"
-                android:title="日历" />
-            <item
-                android:id="@+id/nav_performance"
-                android:icon="@drawable/icon_performance"
-                android:title="绩效" />
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/icon_settings"
+                android:title="设置" />
         </menu>
     </item>
 

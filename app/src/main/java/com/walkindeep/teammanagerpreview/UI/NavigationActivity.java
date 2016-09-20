@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
 import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
 import com.walkindeep.teammanagerpreview.UI.PerferanceActivity;
@@ -76,6 +78,9 @@ public class NavigationActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.navigation, menu);
+        // 设置导航栏上的用户名
+        TextView nav_name_text = (TextView)findViewById(R.id.nav_name);
+        nav_name_text.setText(User.getUsername());
         return true;
     }
 
@@ -123,6 +128,9 @@ public class NavigationActivity extends AppCompatActivity
             Intent intent = new Intent(this, PerferanceActivity.class);
             startActivity(intent);
 
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

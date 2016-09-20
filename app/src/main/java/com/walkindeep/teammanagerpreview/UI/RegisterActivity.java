@@ -103,10 +103,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         //向后台发送JSON并响应处理
-        User.init("guojiahao", "teammanager"); // 必须借助管理员账号才能注册，这样是否会存在安全性问题，待解决
+        User.init("guojiahao", "teammanager"); // 必须借助管理员账号才能注册，这样是否会存在安全性问题
         // 初始化一个RegisterDataPost对象，并使用其向后台发送json文件，发送时使用管理员身份
         RegisterDataPost registerDataPost = new RegisterDataPost();
         registerDataPost.post("users.json", context, User.getUser(), userJSONObject);
+        User.logout(); // 把User类里面登陆的管理员账号注销掉
         return true;
     }
 

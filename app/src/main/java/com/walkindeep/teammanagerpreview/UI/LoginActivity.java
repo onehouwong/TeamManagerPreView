@@ -2,6 +2,7 @@ package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -30,13 +31,20 @@ import java.net.URL;
 public class LoginActivity extends AppCompatActivity {
 
     final Context context = this;
-    Button loginButton; //登陆按钮
+    Button loginButton; //登录按钮
     EditText userNameText; //用户名的EditText
     EditText passwordText; //密码的EditText
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            if(autoLogin()) // 先尝试进行自动登录
+                return;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_login);
 
         //获取登陆界面的组件
@@ -80,6 +88,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * 用于自动登录的函数，前提是已经设置好了sharedPreferences中的数据
+     * @return 是否自动登录的boolean值
+     * @throws Exception
+     */
+    private boolean autoLogin() throws Exception
+    {
+        SharedPreferences loginPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+        if(!loginPreferences.contains("name")) // sharedPreferences还没设置的情况，直接return false
+            return false;
+        String userName = loginPreferences.getString("name", ""); // 获取用户名
+        String password = loginPreferences.getString("password", ""); // 获取密码
+        login(userName, password); // 登录
+        return true;
+    }
+
+    /**
      * 用于登录的函数,利用了HTTP基本认证的方法
      * @param userName 登录用户名
      * @param password 用户密码
@@ -96,14 +120,24 @@ public class LoginActivity extends AppCompatActivity {
                 int code = data.getInt("code");
                 if (code == 200) {  // 账号密码正确的情况
                     User.init(userName, password);
-                    //下面代码用于获取user的key值并记录在user类中
+                    // 创建一个login的sharedPreferences来保持登陆状态
+                    SharedPreferences loginPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                    if(!loginPreferences.contains("name")) {
+                        //Preferences中还没有写入用户名以及密码的时候，即第一次成功登录，此时需要先写入
+                        SharedPreferences.Editor editor = loginPreferences.edit();
+                        editor.putString("name", userName); // 写入用户名
+                        editor.putString("password", password); // 保存密码
+                        editor.apply();
+                    }
+                    // 下面代码用于获取user的key值并记录在user类中
                     LoginDataQuery keyQuery = new LoginDataQuery();
                     keyQuery.getData("users/current.json", context, User.getUser());
                     // Toast.makeText(getBaseContext(), "登录成功" + User.getKey(), Toast.LENGTH_LONG).show();
 
-                    //进入主界面
+                    // 进入主界面
                     Intent intent = new Intent(LoginActivity.this, MyTaskActivity.class);
                     startActivity(intent);
+                    finish(); // 结束LoginActivity
                 } else if (code == 401) { // 账号密码错误的情况
                     Toast.makeText(getBaseContext(), "登录失败，请验证用户名或密码", Toast.LENGTH_LONG).show();
                 } else { // 未知错误?? 有待测试
