@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-    <application
+    <application android:name="MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -53,15 +53,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".CreateTaskActivity"
+            android:name=".UI.CreateTaskActivity"
             android:label="创建任务">
 
         </activity>
 
-        <activity
-            android:name=".Createmission"
-            android:parentActivityName=".Createmission"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Project.NewProject"
             android:parentActivityName=".Project.NewProject"
             android:theme="@style/AppTheme.NoActionBar"></activity>

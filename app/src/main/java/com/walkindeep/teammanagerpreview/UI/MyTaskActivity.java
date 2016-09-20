@@ -19,16 +19,10 @@ import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.TextViewAction;
 import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
-import com.walkindeep.teammanagerpreview.CreateTaskActivity;
-import com.walkindeep.teammanagerpreview.DAO.AbstractDataQuery;
 import com.walkindeep.teammanagerpreview.Project.NewProject;
 import com.walkindeep.teammanagerpreview.Project.Issue;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 //import com.igexin.sdk.PushManager;
 
@@ -58,30 +52,73 @@ public class MyTaskActivity extends NavigationActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
+        右下角+号 浮动按钮
+         */
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButtionTask);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 showBottomSheet();
-
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-/*cardView*/
-//        initCard();
         final User user = User.getUser();  //= User.init("test2", "teammanager");
-        updateTask(user);
+
+        user.updateToDoIssueList(this);
 
         /*下滑刷新*/
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.SwipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateTask(user, swipeRefreshLayout);
+                user.updateToDoIssueList(MyTaskActivity.this);
+                setCardsToUI(buildCardsList());
+
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    public Card[] buildCardsList() {
+        final User user = User.getUser();
+        List<Issue> toDoIssueList = user.getToDoIssueList();
+
+        List<Card> cards = new ArrayList<>();
+
+        for (Issue issue : toDoIssueList) {
+            Card card = new Card.Builder(this)
+                    .withProvider(new CardProvider())
+                    .setLayout(R.layout.material_basic_buttons_card)
+
+                    .setTitle(issue.getSubject())
+                    .setDescription(issue.getDescription())
+                    .addAction(R.id.left_text_button, new TextViewAction(this)
+                            .setText("按钮1")
+                            .setTextResourceColor(R.color.black_button)
+                            .setListener(new OnActionClickListener() {
+                                @Override
+                                public void onActionClicked(View view, Card card) {
+                                    Toast.makeText(mContext, "You have pressed the left button", Toast.LENGTH_SHORT).show();
+                                }
+                            }))
+                    .addAction(R.id.right_text_button, new TextViewAction(this)
+                            .setText("按钮2")
+                            .setTextResourceColor(R.color.accent_material_dark)
+                            .setListener(new OnActionClickListener() {
+                                @Override
+                                public void onActionClicked(View view, Card card) {
+                                    Toast.makeText(mContext, "You have pressed the right button", Toast.LENGTH_SHORT).show();
+                                }
+                            }))
+                    .endConfig()
+                    .build();
+            card.setTag(issue);//设置卡片和issue关联
+            cards.add(card);
+        }
+        return cards.toArray(new Card[cards.size()]);
     }
 
     private void showBottomSheet() {
@@ -93,12 +130,12 @@ public class MyTaskActivity extends NavigationActivity {
                 switch (which) {
                     case R.id.buildProject://创建项目按钮
 
-                         intent = new Intent(MyTaskActivity.this, NewProject.class);
+                        intent = new Intent(MyTaskActivity.this, NewProject.class);
                         startActivity(intent);
                         break;
 
                     case R.id.buildTask://创建任务按钮
-                         intent =new Intent(MyTaskActivity.this,CreateTaskActivity.class);
+                        intent = new Intent(MyTaskActivity.this, CreateTaskActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -106,74 +143,69 @@ public class MyTaskActivity extends NavigationActivity {
         }).show();
     }
 
-    /*更新任务数据*/
-    private void updateTask(User user, SwipeRefreshLayout swipeRefreshLayout) {
-        DataHandler dataHandler = new DataHandler();
-        dataHandler.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
-        swipeRefreshLayout.setRefreshing(false);
-    }
+//    /*更新任务数据*/
+//    private void updateTask(User user, SwipeRefreshLayout swipeRefreshLayout) {
+//        DataHandler dataHandler = new DataHandler();
+//        dataHandler.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
+//        swipeRefreshLayout.setRefreshing(false);
+//    }
 
-    /*更新任务数据*/
-    private void updateTask(User user) {
-        DataHandler dataHandler = new DataHandler();
-        dataHandler.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
-    }
 
-    private Card[] jsonToCards(JSONObject userIssuesJSONObjectTemp) {
-        JSONArray userIssuesJSONArray = null;
-        try {
-            userIssuesJSONArray = userIssuesJSONObjectTemp.getJSONArray("issues");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        List<Card> cards = new ArrayList<>();
-
-        /*用于存储所有issue的list*/
-        List<Issue> issueList = Issue.getIssueList();
-        issueList.clear();
-
-        for (int i = 0; i < userIssuesJSONArray.length(); i++) {
-            try {
-                /*创建issue类*/
-                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"), userIssuesJSONArray.getJSONObject(i).getString("description"), userIssuesJSONArray.getJSONObject(i).getInt("id"));
-                issueList.add(issue);
-
-                Card card = new Card.Builder(this)
-                        .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
-
-                        .setTitle(issue.getSubject())
-                        .setDescription(issue.getDescription())
-                        .addAction(R.id.left_text_button, new TextViewAction(this)
-                                .setText("按钮1")
-                                .setTextResourceColor(R.color.black_button)
-                                .setListener(new OnActionClickListener() {
-                                    @Override
-                                    public void onActionClicked(View view, Card card) {
-                                        Toast.makeText(mContext, "You have pressed the left button", Toast.LENGTH_SHORT).show();
-                                    }
-                                }))
-                        .addAction(R.id.right_text_button, new TextViewAction(this)
-                                .setText("按钮2")
-                                .setTextResourceColor(R.color.accent_material_dark)
-                                .setListener(new OnActionClickListener() {
-                                    @Override
-                                    public void onActionClicked(View view, Card card) {
-                                        Toast.makeText(mContext, "You have pressed the right button", Toast.LENGTH_SHORT).show();
-                                    }
-                                }))
-                        .endConfig()
-                        .build();
-                card.setTag(issue);//设置卡片和issue关联
-                cards.add(card);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return cards.toArray(new Card[cards.size()]);
-    }
+//    private Card[] jsonToCards(JSONObject userIssuesJSONObjectTemp) {
+//        JSONArray userIssuesJSONArray = null;
+//        try {
+//            userIssuesJSONArray = userIssuesJSONObjectTemp.getJSONArray("issues");
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        List<Card> cards = new ArrayList<>();
+//
+//        /*用于存储所有issue的list*/
+//        List<Issue> issueList = Issue.getToDoIssueList();
+//        issueList.clear();
+//
+//        for (int i = 0; i < userIssuesJSONArray.length(); i++) {
+//            try {
+//                /*创建issue类*/
+//                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"), userIssuesJSONArray.getJSONObject(i).getString("description"), userIssuesJSONArray.getJSONObject(i).getInt("id"));
+//                issueList.add(issue);
+//
+//                Card card = new Card.Builder(this)
+//                        .withProvider(new CardProvider())
+//                        .setLayout(R.layout.material_basic_buttons_card)
+//
+//                        .setTitle(issue.getSubject())
+//                        .setDescription(issue.getDescription())
+//                        .addAction(R.id.left_text_button, new TextViewAction(this)
+//                                .setText("按钮1")
+//                                .setTextResourceColor(R.color.black_button)
+//                                .setListener(new OnActionClickListener() {
+//                                    @Override
+//                                    public void onActionClicked(View view, Card card) {
+//                                        Toast.makeText(mContext, "You have pressed the left button", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }))
+//                        .addAction(R.id.right_text_button, new TextViewAction(this)
+//                                .setText("按钮2")
+//                                .setTextResourceColor(R.color.accent_material_dark)
+//                                .setListener(new OnActionClickListener() {
+//                                    @Override
+//                                    public void onActionClicked(View view, Card card) {
+//                                        Toast.makeText(mContext, "You have pressed the right button", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }))
+//                        .endConfig()
+//                        .build();
+//                card.setTag(issue);//设置卡片和issue关联
+//                cards.add(card);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+////        return cards.toArray(new Card[cards.size()]);
+//    }
 
 
     public void setCardsToUI(Card[] cards) {
@@ -200,7 +232,7 @@ public class MyTaskActivity extends NavigationActivity {
                                     issue.setStatusid(3);
                                     issue.pushStatusName(mContext);
 
-                                    List<Issue> issueList =Issue.getIssueList();
+                                    List<Issue> issueList = Issue.getToDoIssueList();
 
 
                                 }
@@ -218,15 +250,22 @@ public class MyTaskActivity extends NavigationActivity {
         });
     }
 
-    class DataHandler extends AbstractDataQuery {
-        @Override
-        protected void work(JSONObject userIssuesJSONObject) {
-            Card[] cards = jsonToCards(userIssuesJSONObject);
-            setCardsToUI(cards);
-        }
-        protected void parseXMLWithPull(String xmlData){
-
-        }
-    }
+    /**
+     * 获取用户的issue数据
+     */
+//    class DataHandler extends AbstractDataQuery {
+//        /**
+//         * @param userIssuesJSONObject
+//         */
+//        @Override
+//        protected void work(JSONObject userIssuesJSONObject) {
+//            Card[] cards = jsonToCards(userIssuesJSONObject);
+//            setCardsToUI(cards);
+//        }
+//
+//        protected void parseXMLWithPull(String xmlData) {
+//
+//        }
+//    }
 }
 

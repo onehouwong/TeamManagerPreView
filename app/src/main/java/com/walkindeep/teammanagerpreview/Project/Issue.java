@@ -1,21 +1,36 @@
 package com.walkindeep.teammanagerpreview.Project;
 
 import android.content.Context;
+import android.util.Base64;
+import android.util.Log;
 
-import com.walkindeep.teammanagerpreview.DAO.DataPost;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.walkindeep.teammanagerpreview.DAO.Constant;
+import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * 任务类 对应Redmine中的任务
  */
 public class Issue {
-    private static List<Issue> issueList = new ArrayList<>();
+    /**
+     * 待完成的任务列表
+     */
+    private static List<Issue> toDoIssueList = new ArrayList<>();
+
     private int issue_id;
     private String projectId;
     private String trackerId;
@@ -42,10 +57,11 @@ public class Issue {
 
     /**
      * 获取该用户所有的issue
+     *
      * @return 装载有所有issue的list
      */
-    public static List<Issue> getIssueList() {
-        return issueList;
+    public static List<Issue> getToDoIssueList() {
+        return toDoIssueList;
     }
 
 
@@ -215,7 +231,6 @@ public class Issue {
      * 推送任务的状态值到后端，状态值是类的成员变量  status_id
      *
      * @param context 上下文
-     *
      */
     public void pushStatusName(Context context) {
         JSONObject jsonObject = null;
@@ -229,14 +244,46 @@ public class Issue {
             e.printStackTrace();
         }
 
-        DataPost dataPost = new DataPost();
-
         String parameter = "issues/" + issue_id + ".json";
-        dataPost.post(parameter, context, User.getUser(), jsonObject);
+        String url = Constant.WEBURL + parameter;
+        final User user = User.getUser();
+
+        //创建一个用于post数据的请求
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("!", "response -> " + response.toString());//在android studio中打印response，正式版应移除这行
+                    }
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("ERROR", "onErrorResponse");//在android studio中打印错误信息,正式版应移除
+            }
+        }) {
+
+            //            在头部添加用户的账号密码以便进行HTTP基本认证
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<String, String>();
+                String creds = String.format("%s:%s", user.getUsername(), user.getPassword());
+                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+                params.put("Authorization", auth);
+                return params;
+            }
+        };
+        //把post请求添加到全局网络访问队列
+        NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
+        networkRequestController.getRequestQueue().add(jsonObjectRequest);
+
     }
 
     /**
      * 获取任务id
+     *
      * @return 任务id
      */
     public int getIssue_id() {
@@ -245,6 +292,7 @@ public class Issue {
 
     /**
      * 设置任务id
+     *
      * @param issue_id 任务id
      */
     public void setIssue_id(int issue_id) {
@@ -252,4 +300,29 @@ public class Issue {
 
     }
 
+    public static void updateIssueList(List<Issue> toDoIssueList, JSONObject userIssuesJSONObjectTemp) {
+        JSONArray userIssuesJSONArray = null;
+        try {
+            userIssuesJSONArray = userIssuesJSONObjectTemp.getJSONArray("issues");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /*用于存储所有issue的list*/
+        toDoIssueList.clear();
+
+        for (int i = 0; i < userIssuesJSONArray.length(); i++) {
+            try {
+                /*创建issue类*/
+                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"),
+                        userIssuesJSONArray.getJSONObject(i).getString("description"),
+                        userIssuesJSONArray.getJSONObject(i).getInt("id"));
+                toDoIssueList.add(issue);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 }
