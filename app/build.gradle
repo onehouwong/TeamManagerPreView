@@ -1,4 +1,9 @@
+
 apply plugin: 'com.android.application'
+
+//使用lint进行冗余依赖检测
+//apply plugin: 'nebula.lint'
+//gradleLint.rules = ['all-dependency'] // add as many rules here as you'd like
 
 android {
     compileSdkVersion 24
@@ -65,4 +70,8 @@ dependencies {
                             compile 'com.android.support:support-v4:+'
                         */
 
+//用于测试冗余依赖监测
+    compile 'com.github.rey5137:material:1.2.4'
 }
+
+
