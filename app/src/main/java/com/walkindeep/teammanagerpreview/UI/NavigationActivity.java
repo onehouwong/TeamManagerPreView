@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.walkindeep.teammanagerpreview.Project.ProjectList;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
 import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
@@ -104,8 +105,12 @@ public class NavigationActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        //handle the projectsList action
+        if(id==R.id.nav_project) {
+                Intent intent = new Intent(this, ProjectListActivity.class);
+                startActivity(intent);
 
-        if (id == R.id.nav_alarm) {
+        }else if (id == R.id.nav_alarm) {
             // Handle the camera action
         } else if (id == R.id.nav_task) {
             if (this instanceof MyTaskActivity)
