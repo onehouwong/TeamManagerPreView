@@ -70,8 +70,6 @@ dependencies {
                             compile 'com.android.support:support-v4:+'
                         */
 
-//用于测试冗余依赖监测
-    compile 'com.github.rey5137:material:1.2.4'
 }
 
 
