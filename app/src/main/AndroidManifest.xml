@@ -58,8 +58,9 @@
 
         </activity>
 
-        <activity android:name=".Project.NewProject"
-            android:parentActivityName=".Project.NewProject"
+        <activity
+            android:name=".UI.NewProject"
+            android:parentActivityName=".UI.NewProject"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
 

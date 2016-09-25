@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview.Project;
+package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.walkindeep.teammanagerpreview.DAO.Constant;
 import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
+import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
 
 
@@ -47,25 +48,37 @@ import java.util.Map;
  * Created by Samsung on 2016/7/24.
  */
 public class NewProject extends AppCompatActivity {
-    /**新创建项目的名字*/
+    List<String> nametemp = new ArrayList<String>();//后台返回项目名List
+    JSONObject jsonGet = new JSONObject();
+    JSONObject jsonpost = new JSONObject();
+    JSONObject jsonoutside = new JSONObject();
+    JSONObject jsonproject = new JSONObject();
+    JSONObject jsonprojects = new JSONObject();
+    JSONArray projectarray = new JSONArray();
+    JSONObject enabled_module_names = new JSONObject();
+    /**
+     * 新创建项目的名字
+     */
     private EditText name;
-    /**新创建项目的相关描述*/
+    /**
+     * 新创建项目的相关描述
+     */
     private EditText description;
-    /**项目的识别*/
+    /**
+     * 项目的识别
+     */
     private EditText identifier;
-    /**项目的主页*/
+    /**
+     * 项目的主页
+     */
     private EditText home;
     private CheckBox publicBox;
-
-
     private TextView showname;
     private TextView showdescription;
     private TextView showidentifier;
     private TextView showhome;
     private TextView showparent;
     private TextView showparent_id;
-
-
     private CheckBox extendsBox;
     private CheckBox issue_track;
     private CheckBox time_tracking;
@@ -82,16 +95,6 @@ public class NewProject extends AppCompatActivity {
     private CheckBox supporting;
     private Button commitProject;
 
-
-    List<String>nametemp=new ArrayList<String>();//后台返回项目名List
-    JSONObject jsonGet=new JSONObject();
-    JSONObject jsonpost=new JSONObject();
-    JSONObject jsonoutside=new JSONObject();
-    JSONObject jsonproject=new JSONObject();
-    JSONObject jsonprojects=new JSONObject();
-    JSONArray projectarray=new JSONArray();
-    JSONObject enabled_module_names=new JSONObject();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -100,11 +103,11 @@ public class NewProject extends AppCompatActivity {
 
 
        /*测试块，用于测试show project相关函数*/
-       Button buttonlist=(Button)findViewById(R.id.button2);
+        Button buttonlist = (Button) findViewById(R.id.button2);
         buttonlist.setEnabled(false);//设置成按钮不可点击，对应函数修改过后，可删除测试
-        Button buttondelete=(Button)findViewById(R.id.button3);
+        Button buttondelete = (Button) findViewById(R.id.button3);
         buttondelete.setEnabled(false);
-        Button buttonupdate=(Button)findViewById(R.id.button4);
+        Button buttonupdate = (Button) findViewById(R.id.button4);
         //listproject函数待修改
        /* buttonlist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,43 +133,43 @@ public class NewProject extends AppCompatActivity {
         });*/
 
 
-
         //-----------------------------------------------------------------------------------------------------//
         try {
             //定义默认值!!track_model不知道应该传送到那里去
-            jsonpost.put("name","");
-            jsonpost.put("identifier","");
-            jsonpost.put("description","");
-            jsonpost.put("homepage","");
-            jsonpost.put("is_public",false);
-            jsonpost.put("issue_tracking",true);
-            jsonpost.put("time_tracking",true);
-            jsonpost.put("new",true);
-            jsonpost.put("files",true);
-            jsonpost.put("Wiki",true);
-            jsonpost.put("repository",true);
-            jsonpost.put("boards",true);
-            jsonpost.put("calender",true);
-            jsonpost.put("gantt",true);
-            jsonpost.put("status",1);
-
+            jsonpost.put("name", "");
+            jsonpost.put("identifier", "");
+            jsonpost.put("description", "");
+            jsonpost.put("homepage", "");
+            jsonpost.put("is_public", false);
+            jsonpost.put("issue_tracking", true);
+            jsonpost.put("time_tracking", true);
+            jsonpost.put("new", true);
+            jsonpost.put("files", true);
+            jsonpost.put("Wiki", true);
+            jsonpost.put("repository", true);
+            jsonpost.put("boards", true);
+            jsonpost.put("calender", true);
+            jsonpost.put("gantt", true);
+            jsonpost.put("status", 1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         /*name实现*/
-        name=(EditText)findViewById(R.id.editText);
+        name = (EditText) findViewById(R.id.editText);
         name.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    jsonpost.put("name",s.toString());
+                    jsonpost.put("name", s.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -174,18 +177,20 @@ public class NewProject extends AppCompatActivity {
         });
 
         /* project_description实现*/
-        description=(EditText)findViewById(R.id.editText2);
+        description = (EditText) findViewById(R.id.editText2);
         description.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    jsonpost.put("description",s.toString());
+                    jsonpost.put("description", s.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -193,10 +198,11 @@ public class NewProject extends AppCompatActivity {
         });
 
         /* identifier实现*/
-        identifier=(EditText)findViewById(R.id.editText3);
+        identifier = (EditText) findViewById(R.id.editText3);
         identifier.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -219,7 +225,7 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    jsonpost.put("identifier",s.toString());
+                    jsonpost.put("identifier", s.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -227,18 +233,20 @@ public class NewProject extends AppCompatActivity {
         });
 
         /*主页描述实现*/
-        home=(EditText)findViewById(R.id.editText4);
+        home = (EditText) findViewById(R.id.editText4);
         home.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    jsonpost.put("homepage",s.toString());
+                    jsonpost.put("homepage", s.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -260,16 +268,16 @@ public class NewProject extends AppCompatActivity {
                         try {
                             userIssuesJSONObject = new JSONObject(response);
                             try {
-                                projectarray=userIssuesJSONObject.getJSONArray("projects");
-                                Log.d("projectarray",projectarray.toString());
-                                for(int i=0;i<projectarray.length();i++) {
-                                    nametemp.add(((JSONObject)projectarray.get(i)).getString("name"));
-                                    Log.d("spinner_name",((JSONObject)projectarray.get(i)).getString("name"));
-                                };
+                                projectarray = userIssuesJSONObject.getJSONArray("projects");
+                                Log.d("projectarray", projectarray.toString());
+                                for (int i = 0; i < projectarray.length(); i++) {
+                                    nametemp.add(((JSONObject) projectarray.get(i)).getString("name"));
+                                    Log.d("spinner_name", ((JSONObject) projectarray.get(i)).getString("name"));
+                                }
+                                ;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -280,7 +288,7 @@ public class NewProject extends AppCompatActivity {
                 error.printStackTrace();
                 error.getMessage();
                 System.out.println(error.networkResponse.statusCode);
-                Log.e("error",error.networkResponse.toString());
+                Log.e("error", error.networkResponse.toString());
             }
         }) {
 
@@ -299,9 +307,9 @@ public class NewProject extends AppCompatActivity {
         NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
         networkRequestController.getRequestQueue().add(stringRequest);
 
-        ArrayAdapter<String>adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, nametemp);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nametemp);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        final Spinner spinnerparent=(Spinner) findViewById(R.id.spinner1);
+        final Spinner spinnerparent = (Spinner) findViewById(R.id.spinner1);
         spinnerparent.setAdapter(adapter);
         //数据加载在work里面动态添加
         // nametemp 的声明加在开头
@@ -309,13 +317,13 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    spinnerparent.setSelection(position,true);
+                    spinnerparent.setSelection(position, true);
 
-                    JSONObject parenttemp=new JSONObject();
+                    JSONObject parenttemp = new JSONObject();
                     parenttemp.put("id", ((JSONObject) projectarray.get(position)).getString("id"));
-                    parenttemp.put("name",((JSONObject) projectarray.get(position)).getString("name"));
-                    jsonpost.put("parent",parenttemp);
-                }catch (JSONException e){
+                    parenttemp.put("name", ((JSONObject) projectarray.get(position)).getString("name"));
+                    jsonpost.put("parent", parenttemp);
+                } catch (JSONException e) {
 
                 }
             }
@@ -328,34 +336,34 @@ public class NewProject extends AppCompatActivity {
 
 
         /*checkBox实现*/
-        publicBox=(CheckBox)findViewById(R.id.checkBox);
-        extendsBox=(CheckBox)findViewById(R.id.checkBox11);
+        publicBox = (CheckBox) findViewById(R.id.checkBox);
+        extendsBox = (CheckBox) findViewById(R.id.checkBox11);
         //model
-        issue_track=(CheckBox)findViewById(R.id.checkBox2);
+        issue_track = (CheckBox) findViewById(R.id.checkBox2);
         issue_track.setChecked(true);
-        time_tracking=(CheckBox)findViewById(R.id.checkBox3);
+        time_tracking = (CheckBox) findViewById(R.id.checkBox3);
         time_tracking.setChecked(true);
-        news=(CheckBox)findViewById(R.id.checkBox4);
+        news = (CheckBox) findViewById(R.id.checkBox4);
         news.setChecked(true);
-        documents=(CheckBox)findViewById(R.id.checkBox5);
+        documents = (CheckBox) findViewById(R.id.checkBox5);
         documents.setChecked(true);
-        files=(CheckBox)findViewById(R.id.checkBox6);
+        files = (CheckBox) findViewById(R.id.checkBox6);
         files.setChecked(true);
-        wiki=(CheckBox)findViewById(R.id.checkBox12);
+        wiki = (CheckBox) findViewById(R.id.checkBox12);
         wiki.setChecked(true);
-        repository=(CheckBox)findViewById(R.id.checkBox7);
+        repository = (CheckBox) findViewById(R.id.checkBox7);
         repository.setChecked(true);
-        boards=(CheckBox)findViewById(R.id.checkBox8);
+        boards = (CheckBox) findViewById(R.id.checkBox8);
         boards.setChecked(true);
-        calendar=(CheckBox)findViewById(R.id.checkBox9);
+        calendar = (CheckBox) findViewById(R.id.checkBox9);
         calendar.setChecked(true);
-        gantt=(CheckBox)findViewById(R.id.checkBox10);
+        gantt = (CheckBox) findViewById(R.id.checkBox10);
         gantt.setChecked(true);
         //trackers label
-        mission=(CheckBox)findViewById(R.id.checkBox13);
+        mission = (CheckBox) findViewById(R.id.checkBox13);
         mission.setChecked(true);
-        function=(CheckBox)findViewById(R.id.checkBox14);
-        supporting=(CheckBox)findViewById(R.id.checkBox15);
+        function = (CheckBox) findViewById(R.id.checkBox14);
+        supporting = (CheckBox) findViewById(R.id.checkBox15);
 
 
         /*实现publicBox监听*/
@@ -363,7 +371,7 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    jsonpost.put("is_public",isChecked);
+                    jsonpost.put("is_public", isChecked);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -375,7 +383,7 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    jsonpost.put("project_inherit_members",isChecked);
+                    jsonpost.put("project_inherit_members", isChecked);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -387,8 +395,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("issue_tracking","issue_tracking");
+                    if (isChecked)
+                        enabled_module_names.put("issue_tracking", "issue_tracking");
                     else
                         enabled_module_names.remove("issue_tracking");
                 } catch (JSONException e) {
@@ -402,8 +410,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("time_tracking","time_tracking");
+                    if (isChecked)
+                        enabled_module_names.put("time_tracking", "time_tracking");
                     else
                         enabled_module_names.remove("time_tracking");
                 } catch (JSONException e) {
@@ -417,8 +425,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("news","issue_tracking");
+                    if (isChecked)
+                        enabled_module_names.put("news", "issue_tracking");
                     else
                         enabled_module_names.remove("news");
                 } catch (JSONException e) {
@@ -432,8 +440,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("documents","documents");
+                    if (isChecked)
+                        enabled_module_names.put("documents", "documents");
                     else
                         enabled_module_names.remove("documents");
                 } catch (JSONException e) {
@@ -447,8 +455,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("files","files");
+                    if (isChecked)
+                        enabled_module_names.put("files", "files");
                     else
                         enabled_module_names.remove("files");
                 } catch (JSONException e) {
@@ -462,8 +470,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("wiki","wiki");
+                    if (isChecked)
+                        enabled_module_names.put("wiki", "wiki");
                     else
                         enabled_module_names.remove("wiki");
                 } catch (JSONException e) {
@@ -477,8 +485,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("repository","repository");
+                    if (isChecked)
+                        enabled_module_names.put("repository", "repository");
                     else
                         enabled_module_names.remove("repository");
                 } catch (JSONException e) {
@@ -493,8 +501,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("boards","boards");
+                    if (isChecked)
+                        enabled_module_names.put("boards", "boards");
                     else
                         enabled_module_names.remove("boards");
                 } catch (JSONException e) {
@@ -508,8 +516,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("calendar","calendar");
+                    if (isChecked)
+                        enabled_module_names.put("calendar", "calendar");
                     else
                         enabled_module_names.remove("calendar");
                 } catch (JSONException e) {
@@ -523,8 +531,8 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked)
-                        enabled_module_names.put("gantt","gantt");
+                    if (isChecked)
+                        enabled_module_names.put("gantt", "gantt");
                     else
                         enabled_module_names.remove("gantt");
                 } catch (JSONException e) {
@@ -541,10 +549,10 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked==true)
-                        jsonpost.put("status",1);
+                    if (isChecked == true)
+                        jsonpost.put("status", 1);
                     else
-                        jsonpost.put("mission",0);
+                        jsonpost.put("mission", 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -555,10 +563,10 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked==true)
-                        jsonpost.put("status",1);
+                    if (isChecked == true)
+                        jsonpost.put("status", 1);
                     else
-                        jsonpost.put("function",0);
+                        jsonpost.put("function", 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -569,10 +577,10 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
-                    if(isChecked==true)
-                        jsonpost.put("supporting",1);
+                    if (isChecked == true)
+                        jsonpost.put("supporting", 1);
                     else
-                        jsonpost.put("status",0);
+                        jsonpost.put("status", 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -586,55 +594,53 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    String s=jsonpost.getString("name");
-                    if(jsonpost.getString("name")=="")
+                    String s = jsonpost.getString("name");
+                    if (jsonpost.getString("name") == "")
                         name.setError("项目名字不能为空");
-                    else if(jsonpost.getString("identifier")=="")
+                    else if (jsonpost.getString("identifier") == "")
                         identifier.setError("项目ID不能为空");
                     else
 
                     {
-                        createProject(User.getUser(),jsonpost);
-                    };
+                        createProject(User.getUser(), jsonpost);
+                    }
+                    ;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
-
-
     }
 
 
-    /**创建一个新项目
+    /**
+     * 创建一个新项目
+     *
      * @param user 当前用户
-     * @param  json 包含用户新创建的项目填写所有信息 */
+     * @param json 包含用户新创建的项目填写所有信息
+     */
     public void createProject(final User user, JSONObject json) {
-        User tempuser= User.init("guojiahao","teammanager");
+        User tempuser = User.init("guojiahao", "teammanager");
         tempuser.setidcount(user.getidcount() + 1);
 
-       // final JSONObject temp = json;
+        // final JSONObject temp = json;
         try {
             jsonoutside.put("id", user.getidcount());
             jsonoutside.put("name", json.getString("name"));
             jsonoutside.put("identifier", json.getString("identifier"));
             jsonoutside.put("description", json.getString("description"));
             jsonoutside.put("status", json.getInt("status"));
-            jsonoutside.put("is_public",json.getBoolean("is_public"));
-            if(json.has("parent"))
-                jsonoutside.put("parent",json.getJSONObject("parent"));
+            jsonoutside.put("is_public", json.getBoolean("is_public"));
+            if (json.has("parent"))
+                jsonoutside.put("parent", json.getJSONObject("parent"));
             //设置当前时间
             jsonoutside.put("created_on", "2016-07-26T15:32:18Z");
             jsonoutside.put("updated_on", "2016-07-26T15:32:18Z");
-            jsonproject.put("project",jsonoutside);
+            jsonproject.put("project", jsonoutside);
         } catch (JSONException e) {
             e.printStackTrace();
-        };
-
-
-
+        }
+        ;
 
 
         //    abstractdata.getData("projects.json",NewProject.this,User.getUser());
@@ -648,14 +654,15 @@ public class NewProject extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("!", "response -> " + response.toString());//在android studio中打印response，正式版应移除这行
-                        Toast.makeText(NewProject.this,"创建成功",Toast.LENGTH_SHORT).show();                    }
+                        Toast.makeText(NewProject.this, "创建成功", Toast.LENGTH_SHORT).show();
+                    }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ERROR", "onErrorResponse");//在android studio中打印错误信息,正式版应移除
                 //此处无法get到代码。如果id冲突，会退出。。。待解决
-                if(error.networkResponse.statusCode==422)
-                    Toast.makeText(NewProject.this,"创建失败，该id已经被使用，错误代码422",Toast.LENGTH_SHORT).show();
+                if (error.networkResponse.statusCode == 422)
+                    Toast.makeText(NewProject.this, "创建失败，该id已经被使用，错误代码422", Toast.LENGTH_SHORT).show();
             }
         }) {
             //            在头部添加用户的账号密码以便进行HTTP基本认证
@@ -672,13 +679,19 @@ public class NewProject extends AppCompatActivity {
         //把post请求添加到全局队列中
         NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
         networkRequestController.getRequestQueue().add(jsonObjectRequest);
-    };
+    }
+
+    ;
 
 
     /*显示项目列表*///--------------------------------------------------------------------------
-    /**显示当前用户所有项目的列表
-     * @param user 当前用户*/
-    public void ListingProjects(final User user){
+
+    /**
+     * 显示当前用户所有项目的列表
+     *
+     * @param user 当前用户
+     */
+    public void ListingProjects(final User user) {
             /*获取后台数据*/
 
         String url = Constant.WEBURL + "projects.json";
@@ -692,16 +705,16 @@ public class NewProject extends AppCompatActivity {
                         try {
                             userIssuesJSONObject = new JSONObject(response);
                             try {
-                                projectarray=userIssuesJSONObject.getJSONArray("projects");
-                                Log.d("projectarray",projectarray.toString());
-                                for(int i=0;i<projectarray.length();i++) {
-                                    nametemp.add(((JSONObject)projectarray.get(i)).getString("name"));
-                                    Log.d("spinner_name",((JSONObject)projectarray.get(i)).getString("name"));
-                                };
+                                projectarray = userIssuesJSONObject.getJSONArray("projects");
+                                Log.d("projectarray", projectarray.toString());
+                                for (int i = 0; i < projectarray.length(); i++) {
+                                    nametemp.add(((JSONObject) projectarray.get(i)).getString("name"));
+                                    Log.d("spinner_name", ((JSONObject) projectarray.get(i)).getString("name"));
+                                }
+                                ;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -712,7 +725,7 @@ public class NewProject extends AppCompatActivity {
                 error.printStackTrace();
                 error.getMessage();
                 System.out.println(error.networkResponse.statusCode);
-                Log.e("error",error.networkResponse.toString());
+                Log.e("error", error.networkResponse.toString());
             }
         }) {
 
@@ -731,40 +744,12 @@ public class NewProject extends AppCompatActivity {
         NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
         networkRequestController.getRequestQueue().add(stringRequest);
 
-        Log.d("jsonarray",projectarray.toString());
+        Log.d("jsonarray", projectarray.toString());
         projectarray.put(jsonpost);
         showListView(projectarray);
-    };
+    }
 
-
-    /*重写适配器*/
-    public class projectAdapter extends ArrayAdapter<JSONObject>
-    {
-        private int a;
-        public projectAdapter(Context context,int textViewResourseId,List<JSONObject> object)
-        {
-            super(context,textViewResourseId,object);
-            a=textViewResourseId;
-        };
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
-            JSONObject project=getItem(position);
-            View view= LayoutInflater.from(getContext()).inflate(a,null);
-            TextView name=(TextView)findViewById(R.id.textView16);
-            TextView desc=(TextView)findViewById(R.id.textView17);
-            TextView id=(TextView)findViewById(R.id.textView18);
-            try {
-                name.setText(project.getString("name"));
-                desc.setText(project.getString("description"));
-                id.setText(project.getString("identifier"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return view;
-        };
-    };
+    ;
 
     /*展示对应user下所有的项目--下次迭代可以添加关键词筛选优化*/
     public void showListView(JSONArray array) {
@@ -788,66 +773,74 @@ public class NewProject extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
             ;
         });
     }
 
+    ;
 
     //展示model
-    public void setCheckStatus(CheckBox c,String paramter) {
+    public void setCheckStatus(CheckBox c, String paramter) {
         try {
             c.setChecked(jsonGet.getBoolean(paramter));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    };
+    }
 
-
-    /** 展示其中一个项目
-     * @param id 对应项目的id */
+    /**
+     * 展示其中一个项目
+     *
+     * @param id 对应项目的id
+     */
     public void showingProject(String id) {
-        for(int i=0;i<projectarray.length();i++) {
+        for (int i = 0; i < projectarray.length(); i++) {
             try {
-                if(((JSONObject)projectarray.get(i)).getString("id").equals(id)){
-                    JSONObject jsontemp=(JSONObject)projectarray.get(i);
+                if (((JSONObject) projectarray.get(i)).getString("id").equals(id)) {
+                    JSONObject jsontemp = (JSONObject) projectarray.get(i);
                     setContentView(R.layout.project);
 
-                    showname=(TextView)findViewById(R.id.textView20);
+                    showname = (TextView) findViewById(R.id.textView20);
                     showname.setText(jsontemp.getString("name").toString());
 
-                    if(jsontemp.has("description")){
-                        showdescription=(TextView)findViewById(R.id.textView22);
-                        showdescription.setText(jsontemp.getString("description"));}
+                    if (jsontemp.has("description")) {
+                        showdescription = (TextView) findViewById(R.id.textView22);
+                        showdescription.setText(jsontemp.getString("description"));
+                    }
 
-                    showidentifier=(TextView)findViewById(R.id.textView24);
+                    showidentifier = (TextView) findViewById(R.id.textView24);
                     showidentifier.setText(jsontemp.getString("identifier"));
 
-                    if(jsontemp.has("home")){
-                        showhome=(TextView)findViewById(R.id.textView26);
-                        showhome.setText(jsontemp.getString("homepage"));};
+                    if (jsontemp.has("home")) {
+                        showhome = (TextView) findViewById(R.id.textView26);
+                        showhome.setText(jsontemp.getString("homepage"));
+                    }
+                    ;
 
-                    if(jsontemp.has("parent")) {
+                    if (jsontemp.has("parent")) {
                         showparent = (TextView) findViewById(R.id.textView28);
-                        showparent_id=(TextView)findViewById(R.id.textView29);
+                        showparent_id = (TextView) findViewById(R.id.textView29);
                         showparent.setText((jsontemp.getJSONObject("parent")).getString("name"));
                         showparent_id.setText((jsontemp.getJSONObject("parent")).getString("identifier"));
                     }
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
 
-    };
+    ;
 
-    /**更新项目
-     * @param id 想要更新的项目id
-     * @param user 想要更新的对应的user账户*///----------------------------------------------------------------------------------------
-    public void updateProject(String id,final User user) {
+    /**
+     * 更新项目
+     *
+     * @param id   想要更新的项目id
+     * @param user 想要更新的对应的user账户
+     *///----------------------------------------------------------------------------------------
+    public void updateProject(String id, final User user) {
         String url = Constant.WEBURL + ("projects.json");
 
 
@@ -860,16 +853,16 @@ public class NewProject extends AppCompatActivity {
                         try {
                             userIssuesJSONObject = new JSONObject(response);
                             try {
-                                projectarray=userIssuesJSONObject.getJSONArray("projects");
-                                Log.d("projectarray",projectarray.toString());
-                                for(int i=0;i<projectarray.length();i++) {
-                                    nametemp.add(((JSONObject)projectarray.get(i)).getString("name"));
-                                    Log.d("spinner_name",((JSONObject)projectarray.get(i)).getString("name"));
-                                };
+                                projectarray = userIssuesJSONObject.getJSONArray("projects");
+                                Log.d("projectarray", projectarray.toString());
+                                for (int i = 0; i < projectarray.length(); i++) {
+                                    nametemp.add(((JSONObject) projectarray.get(i)).getString("name"));
+                                    Log.d("spinner_name", ((JSONObject) projectarray.get(i)).getString("name"));
+                                }
+                                ;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -880,7 +873,7 @@ public class NewProject extends AppCompatActivity {
                 error.printStackTrace();
                 error.getMessage();
                 System.out.println(error.networkResponse.statusCode);
-                Log.e("error",error.networkResponse.toString());
+                Log.e("error", error.networkResponse.toString());
             }
         }) {
 
@@ -899,22 +892,24 @@ public class NewProject extends AppCompatActivity {
         NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
         networkRequestController.getRequestQueue().add(stringRequest);
 
-        if(id==null)
+        if (id == null)
             showListView(projectarray);
         else
             showingProject(id);
+    }
 
-    };
+    ;
 
-
-    /**删除项目
-     * @param id 想要删除项目对应的id
+    /**
+     * 删除项目
+     *
+     * @param id   想要删除项目对应的id
      * @param user 被删除项目所在的用户账户
      */
-    public void deleteProject(String id, final User user){
+    public void deleteProject(String id, final User user) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://teammanager.tk/projects/" + id+".json";
+        String url = "http://teammanager.tk/projects/" + id + ".json";
         // Request a string response from the provided URL.
 
 
@@ -922,21 +917,18 @@ public class NewProject extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("LOGIN-ERROR","Abstractget_error"+ response);
-
+                        Log.e("LOGIN-ERROR", "Abstractget_error" + response);
                     }
-
-
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("LOGIN-ERROR","Abstractget_error"+ error.getMessage(), error);
+                Log.e("LOGIN-ERROR", "Abstractget_error" + error.getMessage(), error);
                 byte[] htmlBodyBytes = error.networkResponse.data;
-                Log.e("LOGIN-ERROR", "Abstractget_error"+new String(htmlBodyBytes), error);
+                Log.e("LOGIN-ERROR", "Abstractget_error" + new String(htmlBodyBytes), error);
                 error.printStackTrace();
                 System.out.println((error.getMessage()));
                 System.out.println(error.networkResponse.statusCode);
-                Log.e("response error",error.toString());
+                Log.e("response error", error.toString());
             }
         }) {
 
@@ -953,9 +945,38 @@ public class NewProject extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    ;
 
+    /*重写适配器*/
+    public class projectAdapter extends ArrayAdapter<JSONObject> {
+        private int a;
 
+        public projectAdapter(Context context, int textViewResourseId, List<JSONObject> object) {
+            super(context, textViewResourseId, object);
+            a = textViewResourseId;
+        }
 
+        ;
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            JSONObject project = getItem(position);
+            View view = LayoutInflater.from(getContext()).inflate(a, null);
+            TextView name = (TextView) findViewById(R.id.textView16);
+            TextView desc = (TextView) findViewById(R.id.textView17);
+            TextView id = (TextView) findViewById(R.id.textView18);
+            try {
+                name.setText(project.getString("name"));
+                desc.setText(project.getString("description"));
+                id.setText(project.getString("identifier"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return view;
+        }
+
+        ;
+    }
 };
 
 
