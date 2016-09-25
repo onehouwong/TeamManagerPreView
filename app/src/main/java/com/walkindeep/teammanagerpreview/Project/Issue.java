@@ -26,11 +26,6 @@ import java.util.Map;
  * 任务类 对应Redmine中的任务
  */
 public class Issue {
-    /**
-     * 待完成的任务列表
-     */
-    private static List<Issue> toDoIssueList = new ArrayList<>();
-
     private int issue_id;
     private String projectId;
     private String trackerId;
@@ -55,15 +50,29 @@ public class Issue {
         this.issue_id = issue_id;
     }
 
-    /**
-     * 获取该用户所有的issue
-     *
-     * @return 装载有所有issue的list
-     */
-    public static List<Issue> getToDoIssueList() {
-        return toDoIssueList;
-    }
+    public static void updateIssueList(List<Issue> toDoIssueList, JSONObject userIssuesJSONObjectTemp) {
+        JSONArray userIssuesJSONArray = null;
+        try {
+            userIssuesJSONArray = userIssuesJSONObjectTemp.getJSONArray("issues");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        /*用于存储所有issue的list*/
+        toDoIssueList.clear();
+
+        for (int i = 0; i < userIssuesJSONArray.length(); i++) {
+            try {
+                /*创建issue类*/
+                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"),
+                        userIssuesJSONArray.getJSONObject(i).getString("description"),
+                        userIssuesJSONArray.getJSONObject(i).getInt("id"));
+                toDoIssueList.add(issue);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /**
      * 获取任务所属项目的id
@@ -298,31 +307,5 @@ public class Issue {
     public void setIssue_id(int issue_id) {
         this.issue_id = issue_id;
 
-    }
-
-    public static void updateIssueList(List<Issue> toDoIssueList, JSONObject userIssuesJSONObjectTemp) {
-        JSONArray userIssuesJSONArray = null;
-        try {
-            userIssuesJSONArray = userIssuesJSONObjectTemp.getJSONArray("issues");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        /*用于存储所有issue的list*/
-        toDoIssueList.clear();
-
-        for (int i = 0; i < userIssuesJSONArray.length(); i++) {
-            try {
-                /*创建issue类*/
-                Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"),
-                        userIssuesJSONArray.getJSONObject(i).getString("description"),
-                        userIssuesJSONArray.getJSONObject(i).getInt("id"));
-                toDoIssueList.add(issue);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
     }
 }

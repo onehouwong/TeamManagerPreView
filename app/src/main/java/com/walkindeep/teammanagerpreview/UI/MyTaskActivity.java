@@ -231,7 +231,6 @@ public class MyTaskActivity extends NavigationActivity {
                                     issue.setStatusid(3);
                                     issue.pushStatusName(mContext);
 
-                                    List<Issue> issueList = Issue.getToDoIssueList();
 
 
                                 }
