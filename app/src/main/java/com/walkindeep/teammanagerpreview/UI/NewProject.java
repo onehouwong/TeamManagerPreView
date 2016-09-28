@@ -1,4 +1,4 @@
-package com.walkindeep.teammanagerpreview.Project;
+package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.walkindeep.teammanagerpreview.DAO.Constant;
 import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
+import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
 
 
