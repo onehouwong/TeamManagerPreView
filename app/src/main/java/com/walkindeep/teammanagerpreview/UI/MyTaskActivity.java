@@ -19,7 +19,6 @@ import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.TextViewAction;
 import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
-import com.walkindeep.teammanagerpreview.Project.NewProject;
 import com.walkindeep.teammanagerpreview.Project.Issue;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
@@ -232,7 +231,6 @@ public class MyTaskActivity extends NavigationActivity {
                                     issue.setStatusid(3);
                                     issue.pushStatusName(mContext);
 
-                                    List<Issue> issueList = Issue.getToDoIssueList();
 
 
                                 }
