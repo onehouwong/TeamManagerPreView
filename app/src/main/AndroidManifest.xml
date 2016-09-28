@@ -21,7 +21,7 @@
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.ProjectListActivity"
+            android:name=".Project.ProjectList"
             android:parentActivityName=".UI.NavigationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

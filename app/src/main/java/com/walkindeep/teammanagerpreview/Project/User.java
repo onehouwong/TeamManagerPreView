@@ -13,10 +13,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.walkindeep.teammanagerpreview.DAO.NetworkRequestController;
 import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.walkindeep.teammanagerpreview.DAO.Constant.WEBURL;
 
 /**
  * 用户类
@@ -37,6 +41,84 @@ public class User {
     private String tracker_ids;
     private String parent_id;
 
+
+    /**
+     * 用户待完成的项目列表
+     */
+    private ArrayList<Project> projects_list = new ArrayList<Project>();
+
+    /*
+    * 获取projects_list*/
+    public ArrayList<Project> get_Projects_List() {
+        return projects_list;
+    }
+
+    /*
+    * 将一个project插入到projects_list中*/
+    public void insert_Projects_List(Project project) {
+        projects_list.add(project);
+    }
+
+    public void set_Project_List(ArrayList<Project> projects_list) {
+        this.projects_list = projects_list;
+    }
+
+    /*
+    * 从网站上获取projects_list,并将它放入到userde projects_list参数中*/
+    public void update_Projects_List() {
+        final User user = User.getUser();
+        String url = WEBURL + "projects.json";
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject j = new JSONObject(response);
+                            JSONArray ja = null;
+                            ja = j.getJSONArray("projects");
+                            projects_list.clear();
+                            for (int i = 0; i < ja.length(); i++) {
+                                Project p = new Project(((JSONObject) ja.get(i)).get("name").toString(), ((JSONObject) ja.get(i)).get("description").toString(),
+                                        ((JSONObject) ja.get(i)).get("identifier").toString());
+                                projects_list.add(p);
+
+                            }
+                            ;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("!", "response -> " + response.toString());//在android studio中打印response，正式版应移除这行
+                    }
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("ERROR", "onErrorResponse");//在android studio中打印错误信息,正式版应移除
+            }
+        }) {
+
+            //            在头部添加用户的账号密码以便进行HTTP基本认证
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<String, String>();
+                String creds = String.format("%s:%s", user.getUsername(), user.getPassword());
+                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+                params.put("Authorization", auth);
+                return params;
+            }
+        };
+        //把post请求添加到全局网络访问队列
+        NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
+        networkRequestController.getRequestQueue().add(jsonObjectRequest);
+
+    }
+
+
+
+
+
+
     /**
      * 用户的待完成的任务的列表
      */
@@ -45,6 +127,8 @@ public class User {
     public List<Issue> getToDoIssueList() {
         return toDoIssueList;
     }
+
+
 
     private static volatile User user = null;
     /**
@@ -236,4 +320,5 @@ public class User {
     public static void setKey(String k) {
         user.key = k;
     }
+
 }

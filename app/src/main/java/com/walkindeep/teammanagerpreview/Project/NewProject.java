@@ -83,7 +83,7 @@ public class NewProject extends AppCompatActivity {
     private Button commitProject;
 
 
-    List<String>nametemp=new ArrayList<String>();//后台返回项目名List
+    ArrayList<String>nametemp=new ArrayList<String>();//后台返回项目名List
     JSONObject jsonGet=new JSONObject();
     JSONObject jsonpost=new JSONObject();
     JSONObject jsonoutside=new JSONObject();
@@ -115,12 +115,12 @@ public class NewProject extends AppCompatActivity {
         });*/
 
         //更新函数测试按钮-buttonupdateProject
-        buttonupdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateProject("16", User.getUser());
-            }
-        });
+//        buttonupdate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                updateProject("16", User.getUser());
+//            }
+//        });
         //delete函数待修改
        /* buttondelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,6 +251,7 @@ public class NewProject extends AppCompatActivity {
 
         final User user = User.getUser();
 
+
         /*新建一个get请求*/
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -259,16 +260,12 @@ public class NewProject extends AppCompatActivity {
                         JSONObject userIssuesJSONObject = null;
                         try {
                             userIssuesJSONObject = new JSONObject(response);
-                            try {
-                                projectarray=userIssuesJSONObject.getJSONArray("projects");
-                                Log.d("projectarray",projectarray.toString());
+                            projectarray=userIssuesJSONObject.getJSONArray("projects");
+                            Log.d("projectarray",projectarray.toString());
                                 for(int i=0;i<projectarray.length();i++) {
                                     nametemp.add(((JSONObject)projectarray.get(i)).getString("name"));
                                     Log.d("spinner_name",((JSONObject)projectarray.get(i)).getString("name"));
                                 };
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -298,7 +295,6 @@ public class NewProject extends AppCompatActivity {
         //把网络请求添加到全局网络请求队列
         NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
         networkRequestController.getRequestQueue().add(stringRequest);
-
         ArrayAdapter<String>adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, nametemp);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         final Spinner spinnerparent=(Spinner) findViewById(R.id.spinner1);
@@ -675,66 +671,66 @@ public class NewProject extends AppCompatActivity {
     };
 
 
-    /*显示项目列表*///--------------------------------------------------------------------------
-    /**显示当前用户所有项目的列表
-     * @param user 当前用户*/
-    public void ListingProjects(final User user){
-            /*获取后台数据*/
-
-        String url = Constant.WEBURL + "projects.json";
-
-        /*新建一个get请求*/
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject userIssuesJSONObject = null;
-                        try {
-                            userIssuesJSONObject = new JSONObject(response);
-                            try {
-                                projectarray=userIssuesJSONObject.getJSONArray("projects");
-                                Log.d("projectarray",projectarray.toString());
-                                for(int i=0;i<projectarray.length();i++) {
-                                    nametemp.add(((JSONObject)projectarray.get(i)).getString("name"));
-                                    Log.d("spinner_name",((JSONObject)projectarray.get(i)).getString("name"));
-                                };
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                error.getMessage();
-                System.out.println(error.networkResponse.statusCode);
-                Log.e("error",error.networkResponse.toString());
-            }
-        }) {
-
-            //            在头部添加用户的账号密码以便进行HTTP基本认证
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> params = new HashMap<String, String>();
-                String creds = String.format("%s:%s", user.getUsername(), user.getPassword());
-                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
-                params.put("Authorization", auth);
-                return params;
-            }
-        };
-
-        //把网络请求添加到全局网络请求队列
-        NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
-        networkRequestController.getRequestQueue().add(stringRequest);
-
-        Log.d("jsonarray",projectarray.toString());
-        projectarray.put(jsonpost);
-        showListView(projectarray);
-    };
+//    /*显示项目列表*/
+//    /**显示当前用户所有项目的列表
+//     * @param user 当前用户*/
+//    public void ListingProjects(final User user){
+//            /*获取后台数据*/
+//
+//        String url = Constant.WEBURL + "projects.json";
+//
+//        /*新建一个get请求*/
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        JSONObject userIssuesJSONObject = null;
+//                        try {
+//                            userIssuesJSONObject = new JSONObject(response);
+//                            try {
+//                                projectarray=userIssuesJSONObject.getJSONArray("projects");
+//                                Log.d("projectarray",projectarray.toString());
+//                                for(int i=0;i<projectarray.length();i++) {
+//                                    nametemp.add(((JSONObject)projectarray.get(i)).getString("name"));
+//                                    Log.d("spinner_name",((JSONObject)projectarray.get(i)).getString("name"));
+//                                };
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                error.printStackTrace();
+//                error.getMessage();
+//                System.out.println(error.networkResponse.statusCode);
+//                Log.e("error",error.networkResponse.toString());
+//            }
+//        }) {
+//
+//            //            在头部添加用户的账号密码以便进行HTTP基本认证
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> params = new HashMap<String, String>();
+//                String creds = String.format("%s:%s", user.getUsername(), user.getPassword());
+//                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+//                params.put("Authorization", auth);
+//                return params;
+//            }
+//        };
+//
+//        //把网络请求添加到全局网络请求队列
+//        NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
+//        networkRequestController.getRequestQueue().add(stringRequest);
+//
+//        Log.d("jsonarray",projectarray.toString());
+//        projectarray.put(jsonpost);
+//        showListView(projectarray);
+//    };
 
 
     /*重写适配器*/
@@ -767,33 +763,33 @@ public class NewProject extends AppCompatActivity {
     };
 
     /*展示对应user下所有的项目--下次迭代可以添加关键词筛选优化*/
-    public void showListView(JSONArray array) {
-        setContentView(R.layout.showprojectlist);
-        final List<JSONObject> projectlist = new ArrayList<JSONObject>();
-        for (int i = 0; i < array.length(); i++)
-            try {
-                projectlist.add((JSONObject) array.get(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        projectAdapter adapter = new projectAdapter(NewProject.this, R.layout.projectlistlayout, projectlist);
-        ListView listview = (ListView) findViewById(R.id.showprojectlistlayout);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                JSONObject projecttemp = projectlist.get(position);
-                try {
-                    showingProject(projecttemp.getString("id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            ;
-        });
-    }
+//    public void showListView(JSONArray array) {
+//        setContentView(R.layout.showprojectlist);
+//        final List<JSONObject> projectlist = new ArrayList<JSONObject>();
+//        for (int i = 0; i < array.length(); i++)
+//            try {
+//                projectlist.add((JSONObject) array.get(i));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        projectAdapter adapter = new projectAdapter(NewProject.this, R.layout.projectlistlayout, projectlist);
+//        ListView listview = (ListView) findViewById(R.id.showprojectlistlayout);
+//        listview.setAdapter(adapter);
+//        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                JSONObject projecttemp = projectlist.get(position);
+//                try {
+//                    showingProject(projecttemp.getString("id"));
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//
+//            ;
+//        });
+//    }
 
 
     //展示model
@@ -847,64 +843,68 @@ public class NewProject extends AppCompatActivity {
     /**更新项目
      * @param id 想要更新的项目id
      * @param user 想要更新的对应的user账户*///----------------------------------------------------------------------------------------
-    public void updateProject(String id,final User user) {
-        String url = Constant.WEBURL + ("projects.json");
-
-
-        /*新建一个get请求*/
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject userIssuesJSONObject = null;
-                        try {
-                            userIssuesJSONObject = new JSONObject(response);
-                            try {
-                                projectarray=userIssuesJSONObject.getJSONArray("projects");
-                                Log.d("projectarray",projectarray.toString());
-                                for(int i=0;i<projectarray.length();i++) {
-                                    nametemp.add(((JSONObject)projectarray.get(i)).getString("name"));
-                                    Log.d("spinner_name",((JSONObject)projectarray.get(i)).getString("name"));
-                                };
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                error.getMessage();
-                System.out.println(error.networkResponse.statusCode);
-                Log.e("error",error.networkResponse.toString());
-            }
-        }) {
-
-            //            在头部添加用户的账号密码以便进行HTTP基本认证
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> params = new HashMap<String, String>();
-                String creds = String.format("%s:%s", user.getUsername(), user.getPassword());
-                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
-                params.put("Authorization", auth);
-                return params;
-            }
-        };
-
-        //把网络请求添加到全局网络请求队列
-        NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
-        networkRequestController.getRequestQueue().add(stringRequest);
-
-        if(id==null)
-            showListView(projectarray);
-        else
-            showingProject(id);
-
-    };
+//    public void updateProject(String id,final User user) {
+//        String url = Constant.WEBURL + ("projects.json");
+//
+//
+//        /*新建一个get请求*/
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        JSONObject userIssuesJSONObject = null;
+//                        try {
+//                            userIssuesJSONObject = new JSONObject(response);
+//                            try {
+//                                projectarray=userIssuesJSONObject.getJSONArray("projects");
+//                                Log.d("projectarray",projectarray.toString());
+//                                for(int i=0;i<projectarray.length();i++) {
+//                                    nametemp.add(((JSONObject)projectarray.get(i)).getString("name"));
+//                                    Log.d("spinner_name",((JSONObject)projectarray.get(i)).getString("name"));
+//                                };
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                error.printStackTrace();
+//                error.getMessage();
+//                System.out.println(error.networkResponse.statusCode);
+//                Log.e("error",error.networkResponse.toString());
+//            }
+//        }) {
+//
+//            //            在头部添加用户的账号密码以便进行HTTP基本认证
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> params = new HashMap<String, String>();
+//                String creds = String.format("%s:%s", user.getUsername(), user.getPassword());
+//                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+//                params.put("Authorization", auth);
+//                return params;
+//            }
+//        };
+//
+//        //把网络请求添加到全局网络请求队列
+//        NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
+//        networkRequestController.getRequestQueue().add(stringRequest);
+//        try {
+//            Thread.sleep(30);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        if(id==null)
+//            showListView(projectarray);
+//        else
+//            showingProject(id);
+//
+//    };
 
 
     /**删除项目

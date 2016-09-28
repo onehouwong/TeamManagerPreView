@@ -92,6 +92,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
      final   User user = User.getUser();
 
+
         //创建请求
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

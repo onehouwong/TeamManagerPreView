@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.walkindeep.teammanagerpreview.Project.ProjectList;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
-import com.walkindeep.teammanagerpreview.UI.MyTaskActivity;
-import com.walkindeep.teammanagerpreview.UI.PerferanceActivity;
 
 
 public class NavigationActivity extends AppCompatActivity
@@ -107,8 +105,9 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
         //handle the projectsList action
         if(id==R.id.nav_project) {
-                Intent intent = new Intent(this, ProjectListActivity.class);
+                Intent intent = new Intent(this, ProjectList.class);
                 startActivity(intent);
+
 
         }else if (id == R.id.nav_alarm) {
             // Handle the camera action
