@@ -66,6 +66,7 @@ public class MyTaskActivity extends NavigationActivity {
             @Override
             public void onClick(View view) {
 
+                //显示“新建项目”、“新建任务”
                 showBottomSheet();
             }
         });
