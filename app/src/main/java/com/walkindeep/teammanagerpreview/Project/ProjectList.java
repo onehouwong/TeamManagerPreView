@@ -57,7 +57,7 @@ public class ProjectList extends AppCompatActivity {
     public void show_project_list(){
         NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
         setContentView(R.layout.project_list);
-        String url=WEBURL+"projects.json";
+        String url = WEBURL + "projects.json?limit=999";//不加“limit=999”的话，默认只返回前25条
         mRecyclerView = (RecyclerView) findViewById(R.id.myproject_list);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
