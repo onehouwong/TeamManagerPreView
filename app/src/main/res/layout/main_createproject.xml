@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    tools:context=".UI.NewProject"
+   >
+    <include layout="@layout/activity_createproject"></include>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_height="200dp">
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:contentScrim="@color/colorPrimary"
+            app:expandedTitleMarginBottom="10dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            >
+
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="第一个固定(pin)"-->
+                <!--android:textSize="40sp"-->
+                <!--app:layout_collapseMode="pin" />-->
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/textView"
+                    android:layout_height="60dp" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@android:drawable/ic_menu_sort_by_size"
+                        android:id="@+id/imageView7" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/editText"
+                        android:textSize="20sp"
+                        android:hint="名称"
+                        />
+
+                    </android.support.design.widget.TextInputLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@android:drawable/ic_menu_set_as"
+                        android:id="@+id/imageView8" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:textSize="20sp"
+                            android:id="@+id/editText2"
+                            android:hint="描述"
+                            />
+
+
+                    </android.support.design.widget.TextInputLayout>
+                </TableRow>
+
+            </LinearLayout>
+
+            <!--项目描述-->
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_gravity="top"
+                android:background="#3F51B5"
+                app:layout_collapseMode="pin"
+                android:layout_height="60dp">
+
+                <TableRow
+                android:layout_width="match_parent"
+                    android:weightSum="1"
+                    android:layout_height="60dp">
+
+                <TextView
+                android:layout_height="50dp"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:id="@+id/toolbar"
+                android:layout_weight="0.7"
+                />
+<!--android:text="我是toolbar"-->
+                <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2">
+
+                </HorizontalScrollView>
+                <Button
+                android:id="@+id/button"
+                android:textAlignment="center"
+                android:background="@android:drawable/ic_menu_send"
+                    android:layout_weight="0.04"
+                    android:layout_height="50dp"
+                    android:gravity="center_horizontal|center"
+                    android:layout_width="35dp" />
+
+
+
+                </TableRow>
+
+            </android.support.v7.widget.Toolbar>
+
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
+

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -54,7 +57,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     private List<String> dataAssignSpinner;//动态加载到 assignSpinner的数组,对应视图中指派给谁的数组
     private ArrayAdapter<String> assignAdapter;//assignSpinner适配器,对应视图中指派给谁的适配器
     private Context mContext;
-
+private TextView theme;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**
@@ -62,7 +65,7 @@ public class CreateTaskActivity extends AppCompatActivity {
          */
         mContext=this;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_task);
+        setContentView(R.layout.main_create_task);
 
          project_id=0;
          tracker_id=0;
@@ -71,9 +74,27 @@ public class CreateTaskActivity extends AppCompatActivity {
          description="";
          subject="";
          estimated_hours=0;
-
         assignSpinner = (Spinner) findViewById(R.id.assignSpinner);//新建Spinner对于layout里面的控件
         dataAssignSpinner = new ArrayList<String>();//初始化
+
+//主题
+        theme = (EditText) findViewById(R.id.themeText);
+        final TextView toolbar2=(TextView)findViewById(R.id.toolbar2);
+        theme.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        toolbar2.setText(s.toString());
+
+                    }
+                });
+
 
         //添加数据
         //这里需要说明一下,Spinner在加载一个动态数组时会出现异步加载问题,导致无法正常显示,这个问题婕妤代码出现过,
@@ -222,8 +243,10 @@ public class CreateTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //主题
-                EditText theme = (EditText) findViewById(R.id.themeText);
+
                 subject = theme.getText().toString();//获取对应的字符串
+//                toolbar.setText(subject);
+
 
                 CheckBox c=(CheckBox)findViewById(R.id.checkbox) ;//创建"是否私有"对应的CheckBox
                 c.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -316,5 +339,5 @@ public class CreateTaskActivity extends AppCompatActivity {
             return dialog;
         }
         return null;
-    }
+}
 }

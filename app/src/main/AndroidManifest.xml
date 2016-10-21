@@ -58,14 +58,18 @@
 
         <activity
             android:name=".UI.CreateTaskActivity"
-            android:label="创建任务">
-
+            android:label="创建任务"
+            android:parentActivityName=".UI.CreateTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
 
         <activity
             android:name=".UI.NewProject"
+            android:label="新建项目"
             android:parentActivityName=".UI.NewProject"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
+        <!-- android:theme="@style/AppTheme.NoActionBar"-->
 
 
     </application>

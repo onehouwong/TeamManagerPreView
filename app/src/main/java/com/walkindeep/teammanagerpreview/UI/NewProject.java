@@ -2,12 +2,16 @@ package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -42,6 +46,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.R.attr.id;
 
 /**
  * Created by Samsung on 2016/7/24.
@@ -96,38 +102,14 @@ public class NewProject extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_createproject);
+        setContentView(R.layout.main_createproject);
+
+        //收起时显示
+        final TextView toolbar=(TextView)findViewById(R.id.toolbar);
 
 
-       /*测试块，用于测试show project相关函数*/
-       Button buttonlist=(Button)findViewById(R.id.button2);
-        buttonlist.setEnabled(false);//设置成按钮不可点击，对应函数修改过后，可删除测试
-        Button buttondelete=(Button)findViewById(R.id.button3);
-        buttondelete.setEnabled(false);
-        Button buttonupdate=(Button)findViewById(R.id.button4);
-        //listproject函数待修改
-       /* buttonlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                ListingProjects(User.getUser());
-            }
-        });*/
 
-        //更新函数测试按钮-buttonupdateProject
-//        buttonupdate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                updateProject("16", User.getUser());
-//            }
-//        });
-        //delete函数待修改
-       /* buttondelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               deleteProject("18",User.getUser());
-            }
-        });*/
 
 
 
@@ -161,17 +143,24 @@ public class NewProject extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                name.setTextSize(30);
+                description.setTextSize(18);
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 try {
                     jsonpost.put("name",s.toString());
+                    toolbar.setText(s.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+
+
 
         /* project_description实现*/
         description=(EditText)findViewById(R.id.editText2);
@@ -180,7 +169,10 @@ public class NewProject extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                name.setTextSize(18);
+                description.setTextSize(30);
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -200,6 +192,7 @@ public class NewProject extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Size();
                 //此时识别
                 //长度必须在 1 到 100 个字符之间。 仅小写字母（a-z）、数字、破折号（-）和下划线（_）可以使用。
                 // 一旦保存，标识无法修改。
@@ -230,7 +223,9 @@ public class NewProject extends AppCompatActivity {
         home=(EditText)findViewById(R.id.editText4);
         home.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Size();
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -359,6 +354,7 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
+                    Size();
                     jsonpost.put("is_public",isChecked);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -371,6 +367,7 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
+                    Size();
                     jsonpost.put("project_inherit_members",isChecked);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -383,6 +380,7 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
+                    Size();
                     if(isChecked)
                         enabled_module_names.put("issue_tracking","issue_tracking");
                     else
@@ -398,6 +396,7 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
+                    Size();
                     if(isChecked)
                         enabled_module_names.put("time_tracking","time_tracking");
                     else
@@ -413,6 +412,7 @@ public class NewProject extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
+                    Size();
                     if(isChecked)
                         enabled_module_names.put("news","issue_tracking");
                     else
@@ -603,6 +603,10 @@ public class NewProject extends AppCompatActivity {
 
     }
 
+    public void Size(){
+        name.setTextSize(18);
+        description.setTextSize(18);
+    };
 
     /**创建一个新项目
      * @param user 当前用户
