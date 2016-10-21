@@ -220,10 +220,10 @@ public class User {
                         try {
                             userIssueJSONObject = new JSONObject(response);
                             Issue.updateIssueList(toDoIssueList, userIssueJSONObject);
-                            //从json分析数据，更新toDoIssueList
-
-                            MyTaskActivity myTaskActivity=(MyTaskActivity) context;
-                          myTaskActivity.setCardsToUI(myTaskActivity.buildCardsList());//设置卡片
+                            // 从json分析数据，更新toDoIssueList
+                            // 此处需要通过MyTaskActivity来调用更新界面的函数
+                            MyTaskActivity myTaskActivity = (MyTaskActivity) context;
+                            myTaskActivity.setToDoIssueList();
 
                         } catch (JSONException e) {
                             e.printStackTrace();

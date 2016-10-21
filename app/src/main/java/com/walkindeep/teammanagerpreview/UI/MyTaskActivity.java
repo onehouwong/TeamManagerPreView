@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.TextViewAction;
 import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
+import com.walkindeep.teammanagerpreview.Controller.RecyclerViewAdapter;
 import com.walkindeep.teammanagerpreview.Project.Issue;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
@@ -33,13 +36,13 @@ import java.util.List;
  */
 public class MyTaskActivity extends NavigationActivity {
     private Context mContext = this;
+    private RecyclerView recyclerView;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//push
-        //PushManager.getInstance().initialize(this.getApplicationContext());
+        user = User.getUser();
 
 
         /*全局导航栏*/
@@ -47,6 +50,10 @@ public class MyTaskActivity extends NavigationActivity {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_task, null, false);
         drawer.addView(contentView, 0);
+
+        recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,9 +71,7 @@ public class MyTaskActivity extends NavigationActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final User user = User.getUser();  //= User.init("test2", "teammanager");
-
-        user.updateToDoIssueList(this);
+        user.updateToDoIssueList(this); // 更新待完成任务列表
 
         /*下滑刷新*/
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.SwipeRefreshLayout);
@@ -74,13 +79,32 @@ public class MyTaskActivity extends NavigationActivity {
             @Override
             public void onRefresh() {
                 user.updateToDoIssueList(MyTaskActivity.this);
-                setCardsToUI(buildCardsList());
-
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
+    /** 在主界面上显示待完成任务列表 需要在User类中updateToDoList中调用
+     * @see User#updateToDoIssueList(Context)
+     */
+    public void setToDoIssueList()
+    {
+        List<Issue> toDoIssueList = user.getToDoIssueList();
+        ArrayList<String> projectNames = new ArrayList<>();
+        ArrayList<String> projectDescs = new ArrayList<>();
+
+        /* 初始化任务名及描述 */
+        for(Issue issue: toDoIssueList){
+            projectNames.add(issue.getSubject());
+            projectDescs.add(issue.getDescription());
+        }
+
+        RecyclerViewAdapter viewAdapter = new RecyclerViewAdapter(projectNames, projectDescs);
+        recyclerView.setAdapter(viewAdapter);
+
+    }
+
+    /*
     public Card[] buildCardsList() {
         final User user = User.getUser();
         List<Issue> toDoIssueList = user.getToDoIssueList();
@@ -118,7 +142,7 @@ public class MyTaskActivity extends NavigationActivity {
             cards.add(card);
         }
         return cards.toArray(new Card[cards.size()]);
-    }
+    }*/
 
     private void showBottomSheet() {
         new BottomSheet.Builder(this).title("新建").sheet(R.menu.task_bottom_sheet).listener(new DialogInterface.OnClickListener() {
@@ -207,17 +231,17 @@ public class MyTaskActivity extends NavigationActivity {
 //    }
 
 
-    public void setCardsToUI(Card[] cards) {
+    /*public void setCardsToUI(Card[] cards) {
         final MaterialListView mListView = (MaterialListView) findViewById(R.id.material_listview);
         mListView.getAdapter().clearAll();
         for (int i = 0; i < cards.length; i++) {
             mListView.getAdapter().add(cards[i]);
 
-            /*设置卡片可以滑动删除*/
+            *//*设置卡片可以滑动删除*//*
             cards[i].setDismissible(true);
         }
 
-        /*设置滑动删除操作*/
+        *//*设置滑动删除操作*//*
         mListView.setOnDismissCallback(new OnDismissCallback() {
             public void onDismiss(final Card card, final int position) {
                 Snackbar.make(mListView, "已标记完成", Snackbar.LENGTH_LONG)
@@ -246,7 +270,7 @@ public class MyTaskActivity extends NavigationActivity {
                         .show();
             }
         });
-    }
+    }*/
 
     /**
      * 获取用户的issue数据
