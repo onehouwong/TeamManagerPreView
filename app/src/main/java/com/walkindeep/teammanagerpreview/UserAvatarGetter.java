@@ -4,6 +4,8 @@ package com.walkindeep.teammanagerpreview;
  * Created by Guo Jiahao on 2016/10/21.
  */
 
+import android.util.Log;
+
 import com.walkindeep.teammanagerpreview.Project.User;
 
 import java.util.*;
@@ -31,7 +33,7 @@ public class UserAvatarGetter {
             MessageDigest md =
                     MessageDigest.getInstance("MD5");
             return "https://www.gravatar.com/avatar/" +
-                    hex(md.digest(user.getUsername().getBytes("CP1252")));
+                    hex(md.digest(User.getEmail().getBytes("CP1252")));
         } catch (NoSuchAlgorithmException e) {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

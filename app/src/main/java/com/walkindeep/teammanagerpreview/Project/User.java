@@ -40,6 +40,7 @@ public class User {
     private String description;
     private String tracker_ids;
     private String parent_id;
+    private String email;
 
 
     /**
@@ -194,7 +195,6 @@ public class User {
     }
 
 
-
     /**
      * @return 已登录的用户
      */
@@ -224,7 +224,6 @@ public class User {
                             // 此处需要通过MyTaskActivity来调用更新界面的函数
                             MyTaskActivity myTaskActivity = (MyTaskActivity) context;
                             myTaskActivity.setToDoIssueList();
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -315,10 +314,14 @@ public class User {
 
     /**
      * 设置key
-     * @param k
+     * @param k key
      */
     public static void setKey(String k) {
         user.key = k;
     }
+
+    public static void setMail(String mail){   user.email = mail;  }
+
+    public static String getEmail(){   return user.email;   }
 
 }

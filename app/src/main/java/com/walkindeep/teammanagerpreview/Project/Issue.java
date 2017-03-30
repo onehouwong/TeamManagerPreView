@@ -27,15 +27,19 @@ import java.util.Map;
  */
 public class Issue {
     private int issue_id;
-    private String projectId;
-    private String trackerId;
-    private int status_id;
+    private String project_name, projectId;
+    private String tracker_name, trackerId;
+    private String status_name,  status_id;
     private String assigned_to_id;
-    private String priority_id;
+    private String priority_name, priority_id;
+    private String author_name, author_id;
+    private String category_name, category_id;
+    private String start_date, due_date, done_ratio, estimate_hours;
     private String description;
     private String subject;
     private String parent_issue_id;
     private String watcher_user_ids;
+
 
     /**
      * issue类的构造方法
@@ -67,6 +71,73 @@ public class Issue {
                 Issue issue = new Issue(userIssuesJSONArray.getJSONObject(i).getString("subject"),
                         userIssuesJSONArray.getJSONObject(i).getString("description"),
                         userIssuesJSONArray.getJSONObject(i).getInt("id"));
+
+                if(userIssuesJSONArray.getJSONObject(i).has("project"))
+                {
+                    issue.project_name = userIssuesJSONArray.getJSONObject(i).getJSONObject("project").getString("name");
+                    issue.projectId = userIssuesJSONArray.getJSONObject(i).getJSONObject("project").getString("id");
+                    Log.i("project", issue.project_name + " " + issue.projectId);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("tracker"))
+                {
+                    issue.tracker_name = userIssuesJSONArray.getJSONObject(i).getJSONObject("tracker").getString("name");
+                    issue.trackerId = userIssuesJSONArray.getJSONObject(i).getJSONObject("tracker").getString("id");
+                    Log.i("tracker", issue.tracker_name + " " + issue.trackerId);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("status"))
+                {
+                    issue.status_name = userIssuesJSONArray.getJSONObject(i).getJSONObject("status").getString("name");
+                    issue.status_id = userIssuesJSONArray.getJSONObject(i).getJSONObject("status").getString("id");
+                    Log.i("status", issue.status_name + " " + issue.status_id);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("priority"))
+                {
+                    issue.priority_name = userIssuesJSONArray.getJSONObject(i).getJSONObject("priority").getString("name");
+                    issue.priority_id = userIssuesJSONArray.getJSONObject(i).getJSONObject("priority").getString("id");
+                    Log.i("priority", issue.priority_name + " " + issue.priority_id);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("category"))
+                {
+                    issue.category_name = userIssuesJSONArray.getJSONObject(i).getJSONObject("category").getString("name");
+                    issue.category_id = userIssuesJSONArray.getJSONObject(i).getJSONObject("category").getString("id");
+                    Log.i("category", issue.category_name + " " + issue.category_id);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("author"))
+                {
+                    issue.author_name = userIssuesJSONArray.getJSONObject(i).getJSONObject("author").getString("name");
+                    issue.author_id = userIssuesJSONArray.getJSONObject(i).getJSONObject("author").getString("id");
+                    Log.i("author", issue.author_name + " " + issue.author_id);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("start_date"))
+                {
+                    issue.start_date = userIssuesJSONArray.getJSONObject(i).getString("start_date");
+                    Log.i("start_date", issue.start_date);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("due_date"))
+                {
+                    issue.due_date = userIssuesJSONArray.getJSONObject(i).getString("due_date");
+                    Log.i("due_date", issue.due_date);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("done_ratio"))
+                {
+                    issue.done_ratio = userIssuesJSONArray.getJSONObject(i).getString("done_ratio");
+                    Log.i("done_ratio", issue.done_ratio);
+                }
+
+                if(userIssuesJSONArray.getJSONObject(i).has("estimate_hours"))
+                {
+                    issue.estimate_hours = userIssuesJSONArray.getJSONObject(i).getString("estimate_hours");
+                    Log.i("estimate_hours", issue.estimate_hours);
+                }
+
                 toDoIssueList.add(issue);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -74,14 +145,6 @@ public class Issue {
         }
     }
 
-    /**
-     * 获取任务所属项目的id
-     *
-     * @return 任务所属项目的id
-     */
-    public String getProjectId() {
-        return projectId;
-    }
 
     /**
      * 设置任务所属项目的id
@@ -92,14 +155,6 @@ public class Issue {
         this.projectId = projectId;
     }
 
-    /**
-     * 获取任务的跟踪者的id
-     *
-     * @return 任务的跟踪者的id
-     */
-    public String getTrackerId() {
-        return trackerId;
-    }
 
     /**
      * 设置跟踪者的id
@@ -110,21 +165,13 @@ public class Issue {
         this.trackerId = trackerId;
     }
 
-    /**
-     * 获取任务状态值
-     *
-     * @return 任务状态值。详情请查Redmine API
-     */
-    public int getStatus_id() {
-        return status_id;
-    }
 
     /**
      * 设置状态值
      *
      * @param status_id 任务的状态值
      */
-    public void setStatusid(int status_id) {
+    public void setStatusid(String status_id) {
         this.status_id = status_id;
     }
 
@@ -200,14 +247,6 @@ public class Issue {
         this.subject = subject;
     }
 
-    /**
-     * 获取任务的重要性值
-     *
-     * @return 任务的重要性值。详情请查阅Redmine Doc
-     */
-    public String getPriority_id() {
-        return priority_id;
-    }
 
     /**
      * 设置任务的重要性值
@@ -235,6 +274,38 @@ public class Issue {
     public void setAssigned_to_id(String assigned_to_id) {
         this.assigned_to_id = assigned_to_id;
     }
+
+    public String getProject_name(){  return this.project_name;   }
+
+    public String getProject_id(){    return this.projectId;    }
+
+    public String getTracker_name(){   return this.tracker_name;   }
+
+    public String getTrack_id(){    return this.trackerId;  }
+
+    public String getStatus_name(){   return status_name; }
+
+    public String getStatus_id(){   return status_id;   }
+
+    public String getPriority_name(){   return priority_name;   }
+
+    public String getPriority_id(){ return priority_name;   }
+
+    public String getAuthor_name(){ return author_name; }
+
+    public String getAuthor_id(){   return author_id;   }
+
+    public String getCategory_name(){   return category_name;   }
+
+    public String getCategory_id(){ return category_id; }
+
+    public String getStart_date(){  return start_date;  }
+
+    public String getDue_date(){    return due_date;    }
+
+    public String getDone_ratio(){  return done_ratio;  }
+
+    public String getEstimate_hours(){  return estimate_hours;  }
 
     /**
      * 推送任务的状态值到后端，状态值是类的成员变量  status_id
@@ -306,6 +377,5 @@ public class Issue {
      */
     public void setIssue_id(int issue_id) {
         this.issue_id = issue_id;
-
     }
 }

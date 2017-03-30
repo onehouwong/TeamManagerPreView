@@ -153,10 +153,26 @@ public class LoginActivity extends AppCompatActivity {
                                         userIssuesJSONObject = new JSONObject(response);
 
                                         try {
-                                            //以下代码将登陆成功后获得的key值记录在User类中，在getData后自动执行
+                                            //以下代码将登陆成功后获得的key和email值记录在User类中，在getData后自动执行
                                             JSONObject userInfo = userIssuesJSONObject.getJSONObject("user");
                                             String key = userInfo.getString("api_key");
                                             User.setKey(key);
+                                            String email = "www";
+                                            // 有些用户可能没有注册邮箱或者隐藏了邮箱，这时候为了防止返回邮箱时出错，设置一个默认值
+                                            if(userInfo.has("mail"))
+                                                email = userInfo.getString("mail");
+                                            User.setMail(email);
+                                            SharedPreferences loginPreferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = loginPreferences.edit();
+                                            editor.putString("api_key", key); // 写入key
+                                            editor.putString("email", email); // 写入email
+                                            editor.apply();
+                                            // 要等到request结束后方可结束activity，为了线程对user的同步
+                                            // 原因是如果不等request结束，navigationActivity会找不到email
+                                            Intent intent = new Intent(LoginActivity.this, MyTaskActivity.class);
+                                            startActivity(intent);
+                                            finish(); // 结束LoginActivity
+
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -188,16 +204,18 @@ public class LoginActivity extends AppCompatActivity {
                             return params;
                         }
                     };
-// Add the request to the RequestQueue.
+                    // Add the request to the RequestQueue.
                     NetworkRequestController networkRequestController = NetworkRequestController.getInstance();
                     networkRequestController.getRequestQueue().add(stringRequest);
 
                     // Toast.makeText(getBaseContext(), "登录成功" + User.getKey(), Toast.LENGTH_LONG).show();
 
                     // 进入主界面
+                    /*
                     Intent intent = new Intent(LoginActivity.this, MyTaskActivity.class);
                     startActivity(intent);
                     finish(); // 结束LoginActivity
+                    */
                 } else if (code == 401) { // 账号密码错误的情况
                     Toast.makeText(getBaseContext(), "登录失败，请验证用户名或密码", Toast.LENGTH_LONG).show();
                 } else { // 未知错误?? 有待测试

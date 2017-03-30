@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import com.cocosw.bottomsheet.BottomSheet;
 import com.dexafree.materialList.card.Card;
@@ -21,13 +20,23 @@ import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.TextViewAction;
 import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
+import com.walkindeep.teammanagerpreview.Controller.MyTaskRecyclerViewAdapter;
 import com.walkindeep.teammanagerpreview.Controller.RecyclerViewAdapter;
 import com.walkindeep.teammanagerpreview.Project.Issue;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
+import com.walkindeep.teammanagerpreview.UserAvatarGetter;
 
 //import com.igexin.sdk.PushManager;
 
+import org.json.JSONObject;
+import org.jsoup.select.Evaluator;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +60,7 @@ public class MyTaskActivity extends NavigationActivity {
         View contentView = inflater.inflate(R.layout.activity_task, null, false);
         drawer.addView(contentView, 0);
 
-        recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -85,24 +94,26 @@ public class MyTaskActivity extends NavigationActivity {
         });
     }
 
-    /** 在主界面上显示待完成任务列表 需要在User类中updateToDoList中调用
+
+    /**
+     * 在主界面上显示待完成任务列表 需要在User类中updateToDoList中调用
+     *
      * @see User#updateToDoIssueList(Context)
      */
-    public void setToDoIssueList()
-    {
+    public void setToDoIssueList() {
         List<Issue> toDoIssueList = user.getToDoIssueList();
-        ArrayList<String> projectNames = new ArrayList<>();
-        ArrayList<String> projectDescs = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> descs = new ArrayList<>();
 
         /* 初始化任务名及描述 */
-        for(Issue issue: toDoIssueList){
-            projectNames.add(issue.getSubject());
-            projectDescs.add(issue.getDescription());
+        for (Issue issue : toDoIssueList) {
+            names.add(issue.getSubject());
+            descs.add(issue.getDescription());
         }
 
-        RecyclerViewAdapter viewAdapter = new RecyclerViewAdapter(projectNames, projectDescs);
-        recyclerView.setAdapter(viewAdapter);
+        MyTaskRecyclerViewAdapter viewAdapter = new MyTaskRecyclerViewAdapter(names, descs, MyTaskActivity.this);
 
+        recyclerView.setAdapter(viewAdapter);
     }
 
     /*
@@ -166,13 +177,14 @@ public class MyTaskActivity extends NavigationActivity {
             }
         }).show();
     }
+}
 
-//    /*更新任务数据*/
-//    private void updateTask(User user, SwipeRefreshLayout swipeRefreshLayout) {
-//        DataHandler dataHandler = new DataHandler();
-//        dataHandler.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
-//        swipeRefreshLayout.setRefreshing(false);
-//    }
+/*    *//*更新任务数据*//*
+    private void updateTask(User user, SwipeRefreshLayout swipeRefreshLayout) {
+        DataHandler dataHandler = new DataHandler();
+        dataHandler.getData("issues.json?assigned_to_id=me" + "&status_id=1", this, user);
+        swipeRefreshLayout.setRefreshing(false);
+    }*/
 
 
 //    private Card[] jsonToCards(JSONObject userIssuesJSONObjectTemp) {
@@ -273,22 +285,22 @@ public class MyTaskActivity extends NavigationActivity {
         });
     }*/
 
-    /**
+    /*/**
      * 获取用户的issue数据
      */
-//    class DataHandler extends AbstractDataQuery {
-//        /**
-//         * @param userIssuesJSONObject
-//         */
-//        @Override
-//        protected void work(JSONObject userIssuesJSONObject) {
-//            Card[] cards = jsonToCards(userIssuesJSONObject);
-//            setCardsToUI(cards);
-//        }
-//
-//        protected void parseXMLWithPull(String xmlData) {
-//
-//        }
-//    }
-}
+    /*class DataHandler extends AbstractDataQuery {
+        /**
+         * @param userIssuesJSONObject
+         *//*
+        @Override
+        protected void work(JSONObject userIssuesJSONObject) {
+            Card[] cards = jsonToCards(userIssuesJSONObject);
+            setCardsToUI(cards);
+        }
+
+        protected void parseXMLWithPull(String xmlData) {
+
+        }
+    }
+}*/
 

@@ -1,26 +1,40 @@
 package com.walkindeep.teammanagerpreview.UI;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.walkindeep.teammanagerpreview.Project.ProjectList;
 import com.walkindeep.teammanagerpreview.Project.User;
 import com.walkindeep.teammanagerpreview.R;
+import com.walkindeep.teammanagerpreview.UserAvatarGetter;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     protected DrawerLayout drawer;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +60,14 @@ public class NavigationActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Log.i("NavigationActivity", "onCreate.");
+        try{
+            setImage(); // 设置导航栏上的用户头像
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
 //        //notification
 //        NotificationCompat.Builder mBuilder =
@@ -140,5 +162,43 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * 用于从gavatar上下载用户图像并设置到导航栏上，采用异步下载的方法
+     */
+    private void setImage() throws Exception
+    {
+        final Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                super.handleMessage(msg);
+                ImageView view=(ImageView)findViewById(R.id.nav_imageView);
+                view.setImageBitmap(bitmap);
+            }
+        };
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //这里下载数据
+                try{
+                    URL url = new URL(UserAvatarGetter.getAvatarURL(User.getUser()));
+                    HttpURLConnection conn  = (HttpURLConnection)url.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream inputStream=conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    Message msg=new Message();
+                    msg.what=1;
+                    handler.sendMessage(msg);
+                } catch (MalformedURLException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

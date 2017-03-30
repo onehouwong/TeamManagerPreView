@@ -16,10 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".UI.TaskDetailActivity"
+            android:label="任务详情"
+            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".UI.NavigationActivity"
-            android:label="@string/title_activity_navigation"
-            android:theme="@style/AppTheme.NoActionBar" />
+        android:label="@string/title_activity_navigation"
+        android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Project.ProjectList"
             android:parentActivityName=".UI.NavigationActivity"
